@@ -26,7 +26,6 @@ class RegistrationController: UIViewController {
         let tf = CustomTextField(padding: 16)
         tf.placeholder = "Enter full name"
         tf.backgroundColor = .white
-        
         return tf
     }()
     
@@ -45,35 +44,12 @@ class RegistrationController: UIViewController {
         tf.isSecureTextEntry = true
         return tf
     }()
-    
-    class CustomTextField: UITextField {
-        
-        let padding: CGFloat
-        
-        init(padding: CGFloat) {
-            self.padding = padding
-            super.init(frame: .zero)
-        }
-        
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.insetBy(dx: padding, dy: 0)
-        }
-        
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.insetBy(dx: padding, dy: 0)
-        }
-        
-        override var intrinsicContentSize: CGSize {
-            return .init(width: 0, height: 50)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupGradientLayer()
         view.backgroundColor = .red
         
         let stackView = UIStackView(arrangedSubviews: [
@@ -86,6 +62,18 @@ class RegistrationController: UIViewController {
         stackView.spacing = 8
         stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
+    fileprivate func setupGradientLayer(){
+        let gradientLayer = CAGradientLayer()
+        
+        let topColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0,1]
+        view.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = view.bounds
     }
     
 
