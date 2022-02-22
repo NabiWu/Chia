@@ -1,0 +1,6 @@
+framework module Pods_Chia {
+  umbrella header "Pods-Chia-umbrella.h"
+
+  export *
+  module * { export * }
+}
