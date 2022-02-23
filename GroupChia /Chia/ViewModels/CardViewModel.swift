@@ -8,6 +8,7 @@
 
 import UIKit
 
+// protocol for Model
 protocol ProducesCardViewModel {
     func toCardViewModel() -> CardViewModel
 }
