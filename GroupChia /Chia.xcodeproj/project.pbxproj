@@ -11,6 +11,7 @@
 		252431A827C454760025EAB9 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A727C454760025EAB9 /* Bindable.swift */; };
 		252431AA27C539070025EAB9 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A927C539070025EAB9 /* SettingsController.swift */; };
 		252431AC27C54D140025EAB9 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431AB27C54D140025EAB9 /* SettingsCell.swift */; };
+		2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */; };
 		25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903127C16BF1005E9408 /* AppDelegate.swift */; };
 		25EB903427C16BF1005E9408 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903327C16BF1005E9408 /* SceneDelegate.swift */; };
 		25EB903627C16BF1005E9408 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903527C16BF1005E9408 /* HomeController.swift */; };
@@ -36,6 +37,7 @@
 		252431A727C454760025EAB9 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		252431A927C539070025EAB9 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		252431AB27C54D140025EAB9 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRangeCell.swift; sourceTree = "<group>"; };
 		25EB902E27C16BF1005E9408 /* Chia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25EB903127C16BF1005E9408 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25EB903327C16BF1005E9408 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				25EB904D27C1B23C005E9408 /* CardView.swift */,
 				25EB905A27C2DC60005E9408 /* CustomTextField.swift */,
 				252431AB27C54D140025EAB9 /* SettingsCell.swift */,
+				2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
 				25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */,
+				2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */,
 				25EB904A27C17564005E9408 /* HomeBottomControlsStackView.swift in Sources */,
 				25EB905127C1C2FC005E9408 /* User.swift in Sources */,
 				252431AA27C539070025EAB9 /* SettingsController.swift in Sources */,

@@ -65,7 +65,7 @@ class HomeController: UIViewController {
         let cardView = CardView(frame: .zero)
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
-//        cardsDeckView.sendSubviewToBack(cardView)
+        cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
     }
     
