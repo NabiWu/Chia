@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController, SettingsControllerDelegate{
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate{
 
 
     let topStackView = TopNavigationStackView()
@@ -29,9 +29,24 @@ class HomeController: UIViewController, SettingsControllerDelegate{
         
         fetchCurrentUser()
         
-//        setupFirestoreUserCards()
-//        fetchUsersFromFirestore()
   
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("HomeController did appear")
+        if Auth.auth().currentUser == nil {
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+        }
+ 
+    }
+    
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
     }
     
     fileprivate let hud = JGProgressHUD(style: .dark)
@@ -97,6 +112,7 @@ class HomeController: UIViewController, SettingsControllerDelegate{
         let settingsController = SettingsController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
     func didSaveSettings() {
