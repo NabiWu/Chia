@@ -12,6 +12,7 @@
 		252431AA27C539070025EAB9 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A927C539070025EAB9 /* SettingsController.swift */; };
 		252431AC27C54D140025EAB9 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431AB27C54D140025EAB9 /* SettingsCell.swift */; };
 		2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */; };
+		2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */; };
 		25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903127C16BF1005E9408 /* AppDelegate.swift */; };
 		25EB903427C16BF1005E9408 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903327C16BF1005E9408 /* SceneDelegate.swift */; };
 		25EB903627C16BF1005E9408 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903527C16BF1005E9408 /* HomeController.swift */; };
@@ -38,6 +39,7 @@
 		252431A927C539070025EAB9 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		252431AB27C54D140025EAB9 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRangeCell.swift; sourceTree = "<group>"; };
+		2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		25EB902E27C16BF1005E9408 /* Chia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25EB903127C16BF1005E9408 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25EB903327C16BF1005E9408 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				25EB904627C16E1E005E9408 /* Extensions+UIView.swift */,
+				2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */,
 				25EB905727C1DA1D005E9408 /* Advertiser.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
