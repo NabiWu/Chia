@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         window?.rootViewController = HomeController()
+//        window?.rootViewController  = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         window?.makeKeyAndVisible()
     }
 
