@@ -10,9 +10,12 @@ import SDWebImage
 
 protocol CardViewDelegate {
     func didTapMoreInfo(cardViewModel: CardViewModel)
+    func didRemoveCard(cardView: CardView)
 }
 
 class CardView: UIView {
+    
+    var nextCardView: CardView?
     
     var delegate: CardViewDelegate?
     
@@ -184,7 +187,7 @@ class CardView: UIView {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
             if shouldDismissCard {
 //                self.frame = CGRect(x: 600 * translationDirection, y: 0, width: self.frame.width, height: self.frame.height)
-                self.center = CGPoint(x: 1000 * translationDirection, y: 0)
+                self.center = CGPoint(x: 700 * translationDirection, y: 0)
 
             } else {
                 self.transform = .identity
@@ -194,6 +197,8 @@ class CardView: UIView {
             self.transform = .identity
             if shouldDismissCard {
                 self.removeFromSuperview()
+                self.delegate?.didRemoveCard(cardView: self)
+                
             }
         }
     }

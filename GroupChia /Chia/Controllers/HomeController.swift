@@ -10,13 +10,13 @@ import Firebase
 import JGProgressHUD
 
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate{
-    
+
 
     
 
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
-    let buttomControls = HomeBottomControlsStackView()
+    let bottomControls = HomeBottomControlsStackView()
     
     
     var cardViewModels = [CardViewModel]()
@@ -25,14 +25,15 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         super.viewDidLoad()
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-        buttomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
- 
+        bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()
-        
-  
     }
+    
+
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -70,7 +71,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     @objc fileprivate func handleRefresh(){
-        fetchUsersFromFirestore()
+        if topCardView == nil {
+            fetchUsersFromFirestore()
+        }
     }
     
     var lastFetchedUser: User?
@@ -85,7 +88,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         hud.show(in: view)
         
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice)
-        
+        topCardView = nil
         query.getDocuments { (snapshot, err) in
             hud.dismiss()
             if let err = err {
@@ -93,15 +96,66 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 return
             }
             
+            //linked list
+            var previousCardView: CardView?
+            
             snapshot?.documents.forEach({ (documentSnapchot) in
                 let userDictionary = documentSnapchot.data()
                 let user = User(dictionary: userDictionary)
             
                 if user.uid != Auth.auth().currentUser?.uid {
-                    self.setupCardFromUser(user: user)
+                    let cardView = self.setupCardFromUser(user: user)
+                    
+                    previousCardView?.nextCardView = cardView
+                    previousCardView = cardView
+                    if self.topCardView == nil {
+                        self.topCardView = cardView
+                    }
                 }
             })
         }
+    }
+    
+    var topCardView: CardView?
+    
+    @objc fileprivate func handleLike() {
+        performSwipeAnimation(translation: 700, angle: 15)
+    
+    }
+    
+    @objc fileprivate func handleDislike(){
+        performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
+    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
+        let duration = 0.3
+        let translationAnimation = CABasicAnimation(keyPath: "position.x")
+        translationAnimation.toValue = translation
+        translationAnimation.duration = duration
+        translationAnimation.fillMode = .forwards
+        translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        translationAnimation.isRemovedOnCompletion = false
+        
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
+        rotationAnimation.duration = duration
+        
+        let cardView = topCardView
+        topCardView = cardView?.nextCardView
+        
+        CATransaction.setCompletionBlock {
+            cardView?.removeFromSuperview()
+        }
+        
+        cardView?.layer.add(translationAnimation, forKey: "translation")
+        cardView?.layer.add(rotationAnimation, forKey: "rotation")
+        
+        CATransaction.commit()
+    }
+    
+    func didRemoveCard(cardView: CardView) {
+        self.topCardView?.removeFromSuperview()
+        self.topCardView = self.topCardView?.nextCardView
     }
     
     //TODO: fetch my items
@@ -110,13 +164,14 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     //TODO: delete my items
     
-    fileprivate func setupCardFromUser(user: User) {
+    fileprivate func setupCardFromUser(user: User) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
+        return cardView
     }
     
     func didTapMoreInfo(cardViewModel:CardViewModel) {
@@ -151,7 +206,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     fileprivate func setupLayout() {
         view.backgroundColor = .white
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, buttomControls])
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControls])
         overallStackView.axis = .vertical
         view.addSubview(overallStackView)
         overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
