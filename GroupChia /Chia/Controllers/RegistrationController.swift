@@ -23,8 +23,11 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     }
 }
 
+
 class RegistrationController: UIViewController {
     
+    
+    var delegate: LoginControllerDelegate?
     // UI Components
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -109,6 +112,11 @@ class RegistrationController: UIViewController {
                 return
             }
             print("Finished registering our user")
+            
+            self?.dismiss(animated: true, completion: {
+                self?.delegate?.didFinishLoggingIn()
+            })
+            
         }
         
     }
@@ -238,6 +246,7 @@ class RegistrationController: UIViewController {
     
     @objc fileprivate func handleGoToLogin(){
         let loginController = LoginController()
+        loginController.delegate = delegate
         navigationController?.pushViewController(loginController, animated: true)
         
     }

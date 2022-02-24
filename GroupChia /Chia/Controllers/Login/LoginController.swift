@@ -91,9 +91,9 @@ class LoginController: UIViewController {
     }()
     
     @objc fileprivate func handleBack() {
-//        navigationController?.popViewController(animated: true)
-        let registrationController = RegistrationController()
-        navigationController?.pushViewController(registrationController, animated: true)
+        navigationController?.popViewController(animated: true)
+//        let registrationController = RegistrationController()
+//        navigationController?.pushViewController(registrationController, animated: true)
     }
 
     override func viewDidLoad() {
@@ -117,7 +117,7 @@ class LoginController: UIViewController {
         }
         loginViewModel.isLoggingIn.bind { [unowned self] (isRegistering) in
             if isRegistering == true {
-                self.loginHUD.textLabel.text = "Register"
+                self.loginHUD.textLabel.text = "Hooray! "
                 self.loginHUD.show(in: self.view)
             } else {
                 self.loginHUD.dismiss()

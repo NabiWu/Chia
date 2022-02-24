@@ -47,7 +47,19 @@ class RegistrationViewModel {
             }
             print("Successfully register user:", res?.user.uid ?? "")
             self.saveImageToFirebase(completion: completion)
- 
+        
+        }
+        
+        Firestore.firestore().collection("cities").document("LA").setData([
+            "name": "Los Angeles",
+            "state": "CA",
+            "country": "USA"
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
         }
     }
     

@@ -9,8 +9,10 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate{
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate{
+    
 
+    
 
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
@@ -36,9 +38,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         super.viewDidAppear(animated)
         print("HomeController did appear")
         if Auth.auth().currentUser == nil {
-            let loginController = LoginController()
-            loginController.delegate = self
-            let navController = UINavigationController(rootViewController: loginController)
+            let registrationController = RegistrationController()
+            registrationController.delegate = self
+            let navController = UINavigationController(rootViewController: registrationController)
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
         }
@@ -92,23 +94,39 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ (documentSnapchot) in
                 let userDictionary = documentSnapchot.data()
                 let user = User(dictionary: userDictionary)
-                self.cardViewModels.append(user.toCardViewModel())
-                self.lastFetchedUser = user
-                self.setupCardFromUser(user: user)
+            
+                if user.uid != Auth.auth().currentUser?.uid {
+                    self.setupCardFromUser(user: user)
+                }
             })
         }
     }
     
+    //TODO: fetch my items
+    
+    //TODO: edit my items
+    
+    //TODO: delete my items
+    
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero)
+        cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
     }
     
+    func didTapMoreInfo(cardViewModel:CardViewModel) {
+        print("Home controller:",cardViewModel.attributedString)
+        let userDetailsController = UserDetailsController()
+        userDetailsController.modalPresentationStyle = .fullScreen
+        userDetailsController.cardViewModel = cardViewModel
+        present(userDetailsController, animated: true)
+    }
+    
     @objc func handleSettings(){
-        print("show registration page")
+        
         let settingsController = SettingsController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
