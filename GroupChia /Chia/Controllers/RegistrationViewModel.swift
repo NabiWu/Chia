@@ -50,17 +50,17 @@ class RegistrationViewModel {
         
         }
         
-//        Firestore.firestore().collection("cities").document("LA").setData([
-//            "name": "Los Angeles",
-//            "state": "CA",
-//            "country": "USA"
-//        ]) { err in
-//            if let err = err {
-//                print("Error writing document: \(err)")
-//            } else {
-//                print("Document successfully written!")
-//            }
-//        }
+        Firestore.firestore().collection("cities").document("LA").setData([
+            "name": "Los Angeles",
+            "state": "CA",
+            "country": "USA"
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
     }
     
     fileprivate func saveImageToFirebase(completion: @escaping (Error?) ->()){
