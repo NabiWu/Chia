@@ -17,6 +17,7 @@
 		2587449627C5D44500FCDDC4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449527C5D44500FCDDC4 /* LoginViewModel.swift */; };
 		2587449927C5FEF400FCDDC4 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449827C5FEF400FCDDC4 /* UserDetailsController.swift */; };
 		25C34A9327C6C0F200DE63CF /* SwipingPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C34A9227C6C0F200DE63CF /* SwipingPhotosController.swift */; };
+		25C34A9527C7DE1E00DE63CF /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C34A9427C7DE1E00DE63CF /* PhotoController.swift */; };
 		25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903127C16BF1005E9408 /* AppDelegate.swift */; };
 		25EB903427C16BF1005E9408 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903327C16BF1005E9408 /* SceneDelegate.swift */; };
 		25EB903627C16BF1005E9408 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB903527C16BF1005E9408 /* HomeController.swift */; };
@@ -48,6 +49,7 @@
 		2587449527C5D44500FCDDC4 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		2587449827C5FEF400FCDDC4 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		25C34A9227C6C0F200DE63CF /* SwipingPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosController.swift; sourceTree = "<group>"; };
+		25C34A9427C7DE1E00DE63CF /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		25EB902E27C16BF1005E9408 /* Chia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25EB903127C16BF1005E9408 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25EB903327C16BF1005E9408 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				2587449827C5FEF400FCDDC4 /* UserDetailsController.swift */,
 				25C34A9227C6C0F200DE63CF /* SwipingPhotosController.swift */,
+				25C34A9427C7DE1E00DE63CF /* PhotoController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2587449427C5D42200FCDDC4 /* LoginController.swift in Sources */,
+				25C34A9527C7DE1E00DE63CF /* PhotoController.swift in Sources */,
 				2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */,
 				25EB905727C1DA1D005E9408 /* Advertiser.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
