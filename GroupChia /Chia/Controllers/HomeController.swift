@@ -76,7 +76,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     var lastFetchedUser: User?
     
     fileprivate func fetchUsersFromFirestore() {
-        guard let minPrice = user?.minSeekingPrice, let maxPrice = user?.maxSeekingPrice else {return}
+        
+        let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
+        let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Fetching Users"

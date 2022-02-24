@@ -218,16 +218,22 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         user?.maxSeekingPrice = maxValue
     }
     
+    static let defaultMinSeekingPrice = 1
+    static let defaultMaxSeekingPrice = 100
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 5 {
             let priceRangeCell = PriceRangeCell(style: .default, reuseIdentifier: nil)
             priceRangeCell.minSlider.addTarget(self, action: #selector(handleMinPriceChange), for: .valueChanged)
             priceRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxPriceChange), for: .valueChanged)
             
-            priceRangeCell.minLabel.text = "Min \(user?.minSeekingPrice ?? -1)"
-            priceRangeCell.maxLabel.text = "Max \(user?.maxSeekingPrice ?? -1)"
-            priceRangeCell.minSlider.value = Float(user?.minSeekingPrice ?? -1)
-            priceRangeCell.maxSlider.value = Float(user?.maxSeekingPrice ?? -1)
+            let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
+            let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
+            
+            priceRangeCell.minLabel.text = "Min \(minPrice)"
+            priceRangeCell.maxLabel.text = "Max \(maxPrice)"
+            priceRangeCell.minSlider.value = Float(minPrice)
+            priceRangeCell.maxSlider.value = Float(maxPrice)
             return priceRangeCell
         }
         

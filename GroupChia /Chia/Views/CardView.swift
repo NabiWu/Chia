@@ -21,7 +21,7 @@ class CardView: UIView {
             let imageName = cardViewModel.imageUrls.first ?? ""
 //            imageView.image = UIImage(named: imageName)
             if let url = URL(string: imageName){
-                imageView.sd_setImage(with: url)
+                imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
             }
             
             
@@ -44,7 +44,7 @@ class CardView: UIView {
     fileprivate func setupImageIndexObserver(){
         cardViewModel.imageIndexObserver = {[weak self] (idx, imageUrl) in
             if let url = URL(string: imageUrl ?? "") {
-                self?.imageView.sd_setImage(with: url)
+                self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
             }
           
             
