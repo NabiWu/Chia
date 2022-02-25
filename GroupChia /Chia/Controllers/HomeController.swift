@@ -216,7 +216,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     fileprivate func presesntMatchView(cardUID: String){
         let matchView = MatchView()
-        
+        matchView.cardUID = cardUID
+        matchView.currentUser = self.user
         view.addSubview(matchView)
         matchView.fillSuperview()
     }
