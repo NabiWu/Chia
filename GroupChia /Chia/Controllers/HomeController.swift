@@ -26,7 +26,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         buttomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
- 
+        buttomControls.postButton.addTarget(self, action: #selector(handlePostItem), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()
@@ -101,6 +101,26 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     self.setupCardFromUser(user: user)
                 }
             })
+        }
+    }
+    
+    @objc func handlePostItem() {
+        addItem()
+    }
+    
+    
+    func addItem() {
+        Firestore.firestore().collection("items").document("exampleItem").setData([
+            "description":"",
+            "imageUrl1":"",
+            "price":1,
+            "uid": self.user?.uid! ?? ""
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
         }
     }
     
