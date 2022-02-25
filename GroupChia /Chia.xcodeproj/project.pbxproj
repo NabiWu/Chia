@@ -34,6 +34,8 @@
 		25EB905927C2B3EA005E9408 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB905827C2B3EA005E9408 /* RegistrationController.swift */; };
 		25EB905B27C2DC60005E9408 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB905A27C2DC60005E9408 /* CustomTextField.swift */; };
 		25EB905D27C305E5005E9408 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */; };
+		4B3AB78D27C943F2003B423F /* PostItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB78C27C943F2003B423F /* PostItemController.swift */; };
+		4B3AB79127C94AA4003B423F /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB79027C94AA4003B423F /* PostItem.swift */; };
 		EFF7F0EAF9FC634811080253 /* Pods_Chia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +70,8 @@
 		25EB905827C2B3EA005E9408 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		25EB905A27C2DC60005E9408 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		4B3AB78C27C943F2003B423F /* PostItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemController.swift; sourceTree = "<group>"; };
+		4B3AB79027C94AA4003B423F /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
 		61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AB479F75EB767792404A73 /* Pods-Chia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chia.release.xcconfig"; path = "Target Support Files/Pods-Chia/Pods-Chia.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -167,6 +171,7 @@
 			children = (
 				25EB905027C1C2FC005E9408 /* User.swift */,
 				25EB905627C1DA1D005E9408 /* Advertiser.swift */,
+				4B3AB79027C94AA4003B423F /* PostItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */,
 				252431A727C454760025EAB9 /* Bindable.swift */,
 				252431A927C539070025EAB9 /* SettingsController.swift */,
+				4B3AB78C27C943F2003B423F /* PostItemController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -356,6 +362,8 @@
 				25EB904A27C17564005E9408 /* HomeBottomControlsStackView.swift in Sources */,
 				2587449627C5D44500FCDDC4 /* LoginViewModel.swift in Sources */,
 				25EB905127C1C2FC005E9408 /* User.swift in Sources */,
+				4B3AB79127C94AA4003B423F /* PostItem.swift in Sources */,
+				4B3AB78D27C943F2003B423F /* PostItemController.swift in Sources */,
 				252431AA27C539070025EAB9 /* SettingsController.swift in Sources */,
 				25EB905927C2B3EA005E9408 /* RegistrationController.swift in Sources */,
 				25EB904C27C179DE005E9408 /* TopNavigationStackView.swift in Sources */,
