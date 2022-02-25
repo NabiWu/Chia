@@ -11,6 +11,9 @@
 		252431A827C454760025EAB9 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A727C454760025EAB9 /* Bindable.swift */; };
 		252431AA27C539070025EAB9 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A927C539070025EAB9 /* SettingsController.swift */; };
 		252431AC27C54D140025EAB9 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431AB27C54D140025EAB9 /* SettingsCell.swift */; };
+		2566D21A27C89F4100BC2C2B /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21927C89F4100BC2C2B /* MatchView.swift */; };
+		2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */; };
+		2566D21E27C93DDB00BC2C2B /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */; };
 		2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */; };
 		2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */; };
 		2587449427C5D42200FCDDC4 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449327C5D42200FCDDC4 /* LoginController.swift */; };
@@ -43,6 +46,9 @@
 		252431A727C454760025EAB9 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		252431A927C539070025EAB9 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		252431AB27C54D140025EAB9 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		2566D21927C89F4100BC2C2B /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
+		2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRangeCell.swift; sourceTree = "<group>"; };
 		2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		2587449327C5D42200FCDDC4 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -158,6 +164,9 @@
 				25EB905A27C2DC60005E9408 /* CustomTextField.swift */,
 				252431AB27C54D140025EAB9 /* SettingsCell.swift */,
 				2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */,
+				2566D21927C89F4100BC2C2B /* MatchView.swift */,
+				2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */,
+				2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -348,12 +357,14 @@
 				25C34A9527C7DE1E00DE63CF /* PhotoController.swift in Sources */,
 				2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */,
 				25EB905727C1DA1D005E9408 /* Advertiser.swift in Sources */,
+				2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
 				25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */,
 				2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */,
 				2587449927C5FEF400FCDDC4 /* UserDetailsController.swift in Sources */,
 				25EB904A27C17564005E9408 /* HomeBottomControlsStackView.swift in Sources */,
+				2566D21A27C89F4100BC2C2B /* MatchView.swift in Sources */,
 				2587449627C5D44500FCDDC4 /* LoginViewModel.swift in Sources */,
 				25EB905127C1C2FC005E9408 /* User.swift in Sources */,
 				252431AA27C539070025EAB9 /* SettingsController.swift in Sources */,
@@ -364,6 +375,7 @@
 				25EB905D27C305E5005E9408 /* RegistrationViewModel.swift in Sources */,
 				25EB904727C16E1E005E9408 /* Extensions+UIView.swift in Sources */,
 				25EB903427C16BF1005E9408 /* SceneDelegate.swift in Sources */,
+				2566D21E27C93DDB00BC2C2B /* KeepSwipingButton.swift in Sources */,
 				252431AC27C54D140025EAB9 /* SettingsCell.swift in Sources */,
 				25C34A9327C6C0F200DE63CF /* SwipingPhotosController.swift in Sources */,
 				25EB905527C1D60D005E9408 /* CardViewModel.swift in Sources */,
