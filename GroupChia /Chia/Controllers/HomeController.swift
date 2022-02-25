@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate{
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate, PostItemControllerDelegate{
     
 
     
@@ -105,15 +105,23 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     @objc func handlePostItem() {
-        addItem()
+        let postItemController = PostItemController()
+        postItemController.delegate = self
+        let navController = UINavigationController(rootViewController: postItemController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+//        addItem()
     }
     
+    func didSaveItems() {
+        fetchCurrentUser()
+    }
     
     func addItem() {
-        Firestore.firestore().collection("items").document("exampleItem").setData([
+        Firestore.firestore().collection("items").document(UUID().uuidString).setData([
             "description":"",
             "imageUrl1":"",
-            "price":1,
+            "price":"1",
             "uid": self.user?.uid! ?? ""
         ]) { err in
             if let err = err {
