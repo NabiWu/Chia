@@ -24,13 +24,22 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = true
+        
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        topStackView.messageButton.addTarget(self, action: #selector(handleMessage), for: .touchUpInside)
+        
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()
+    }
+    
+    @objc fileprivate func handleMessage(){
+        let vc = MatchesMessagesController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 
@@ -106,7 +115,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         hud.textLabel.text = "Fetching Users"
         hud.show(in: view)
         
-        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice)
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice).limit(to: 10)
         topCardView = nil
         query.getDocuments { (snapshot, err) in
             hud.dismiss()
@@ -121,6 +130,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ (documentSnapchot) in
                 let userDictionary = documentSnapchot.data()
                 let user = User(dictionary: userDictionary)
+                
+                self.users[user.uid ?? ""] = user
             
                 let isNotCurrentUser =  user.uid != Auth.auth().currentUser?.uid
 //                let hasSwipedBefore = self.swipes[user.uid!] == nil
@@ -139,6 +150,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             })
         }
     }
+    
+    var users = [String: User]()
     
     var topCardView: CardView?
     
@@ -210,6 +223,38 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
                 self.presesntMatchView(cardUID: cardUID)
+                
+                guard let cardUser = self.users[cardUID] else {return}
+                
+                let data = [
+                    "name": cardUser.name ?? "",
+                    "profileImageUrl": cardUser.imageUrl1 ?? "",
+                    "uid": cardUID,
+                    "timestamp": Timestamp(date: Date())
+                ] as [String : Any]
+                
+                Firestore.firestore().collection("matches_messages").document(uid).collection("matches").document(cardUID).setData(data) { err in
+                    if let err = err {
+                        print("Failed to save match info:", err)
+                        return
+                    }
+                }
+                
+                guard let currentUser = self.user else {return}
+                
+                let otherMatchData = [
+                    "name": currentUser.name ?? "",
+                    "profileImageUrl": currentUser.imageUrl1 ?? "",
+                    "uid": cardUID,
+                    "timestamp": Timestamp(date: Date())
+                ] as [String : Any]
+                
+                Firestore.firestore().collection("matches_messages").document(cardUID).collection("matches").document(uid).setData(otherMatchData) { err in
+                    if let err = err {
+                        print("Failed to save match info:", err)
+                        return
+                    }
+                }
             }
         }
     }
