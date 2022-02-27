@@ -7,12 +7,18 @@
 
 import LBTATools
 import Firebase
+import UIKit
 
 
 
 
 class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionViewDelegateFlowLayout {
 
+    deinit{
+        print("ChatlogController is destroying itself properly, no retain cycles or any other memory issues")
+    }
+    
+    
     fileprivate let match: Match
     fileprivate lazy var customNavBar = MessagesNavBar(match: match)
     fileprivate let navBarHeight: CGFloat = 120
@@ -30,6 +36,47 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
     
     @objc fileprivate func handleSend() {
         print(customInputView.textView.text ?? "")
+        
+        saveToFromMessages()
+        saveToFromRecentMessage()
+        
+        
+    }
+    
+    fileprivate func saveToFromRecentMessage(){
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        
+        let data = ["text": customInputView.textView.text ?? "",
+                    "name": match.name,
+                    "profileImageUrl": match.profileImageUrl,
+                    "timestamp": Timestamp(date: Date()),
+                    "uid": match.uid
+        ] as [String : Any]
+        
+        Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages").document(match.uid).setData(data) { err in
+            if let err = err {
+                print("Failed to save recent messages", err)
+                return
+            }
+            print("saved recent message")
+        }
+        
+        guard let currentUser = self.currentUser else {return}
+        
+        let toData = ["text": customInputView.textView.text ?? "",
+                    "name": currentUser.name ?? "",
+                    "profileImageUrl": currentUser.imageUrl1 ?? "",
+                    "timestamp": Timestamp(date: Date()),
+                    "uid": currentUserId
+        ] as [String : Any]
+        
+        Firestore.firestore().collection("matches_messages").document(match.uid).collection("recent_messages").document(currentUserId).setData(toData)
+        
+        
+        
+    }
+    
+    fileprivate func saveToFromMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         let collection = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid)
         
@@ -68,6 +115,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
         return true
     }
     
+    var listener: ListenerRegistration?
     
     fileprivate func fetchMessages(){
         print("fetch messages")
@@ -75,7 +123,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid).order(by: "timestamp")
         
-        query.addSnapshotListener { querySnapshot, err in
+        listener = query.addSnapshotListener { querySnapshot, err in
             if let err = err {
                 print("Failed to fetch messages:", err)
                 return
@@ -94,8 +142,27 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            listener?.remove()
+        }
+    }
+    
+    var currentUser: User?
+    
+    fileprivate func fetchCurrentUser(){
+        Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "").getDocument { snapshot, err in
+            let data = snapshot?.data() ?? [:]
+            self.currentUser = User(dictionary: data)
+        }
+    }
+    
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        fetchCurrentUser()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         collectionView.keyboardDismissMode = .interactive
