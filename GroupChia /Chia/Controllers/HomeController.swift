@@ -245,7 +245,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let otherMatchData = [
                     "name": currentUser.name ?? "",
                     "profileImageUrl": currentUser.imageUrl1 ?? "",
-                    "uid": cardUID,
+                    "uid": currentUser.uid ?? "",
                     "timestamp": Timestamp(date: Date())
                 ] as [String : Any]
                 
