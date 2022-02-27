@@ -22,6 +22,10 @@ class CustomImagePickerController: UIImagePickerController {
 
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    deinit{
+        print("Object is destroying itself properly, no retain cycles or any other memory issues")
+    }
+    
     var delegate: SettingsControllerDelegate?
     
     // instance properties

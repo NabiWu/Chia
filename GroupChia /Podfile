@@ -13,4 +13,5 @@ target 'Chia' do
     pod 'GoogleAppMeasurement', '~> 5.4.0'
     pod 'SDWebImage', '~>4.4.2’
     pod 'JGProgressHUD', '~>2.0.3'
+    pod 'LBTATools'
 end
