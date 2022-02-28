@@ -95,29 +95,76 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             print("Swipes:", snapchot?.data() ?? "")
             guard let data = snapchot?.data() as? [String: Int] else {return}
             self.swipes = data
-            self.fetchUsersFromFirestore()
+            self.fetchItemsFromFirestore()
         }
     }
     
     @objc fileprivate func handleRefresh(){
         cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchUsersFromFirestore()
+        fetchItemsFromFirestore()
 
     }
     
     var lastFetchedUser: User?
     
-    fileprivate func fetchUsersFromFirestore() {
+//    fileprivate func fetchUsersFromFirestore() {
+//
+//        let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
+//        let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
+//
+//        let hud = JGProgressHUD(style: .dark)
+//        hud.textLabel.text = "Fetching Users"
+//        hud.show(in: view)
+//
+//        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice).limit(to: 10)
+//        topCardView = nil
+//        query.getDocuments { (snapshot, err) in
+//            hud.dismiss()
+//            if let err = err {
+//                print("Failed to fetch users:", err)
+//                return
+//            }
+//
+//            //linked list
+//            var previousCardView: CardView?
+//
+//            snapshot?.documents.forEach({ (documentSnapchot) in
+//                let userDictionary = documentSnapchot.data()
+//                let user = User(dictionary: userDictionary)
+//
+//                self.users[user.uid ?? ""] = user
+//
+//                let isNotCurrentUser =  user.uid != Auth.auth().currentUser?.uid
+////                let hasSwipedBefore = self.swipes[user.uid!] == nil
+//
+//                let hasSwipedBefore = true
+//
+//                if isNotCurrentUser && hasSwipedBefore {
+//                    let cardView = self.setupCardFromUser(user: user)
+//
+//                    previousCardView?.nextCardView = cardView
+//                    previousCardView = cardView
+//                    if self.topCardView == nil {
+//                        self.topCardView = cardView
+//                    }
+//                }
+//            })
+//        }
+//    }
+    
+    fileprivate func fetchItemsFromFirestore() {
         
         let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
         let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
         
         let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Fetching Users"
+        hud.textLabel.text = "Fetching Items"
         hud.show(in: view)
+
+        let query = Firestore.firestore().collection("items").whereField("price", isGreaterThanOrEqualTo: minPrice).whereField("price", isLessThanOrEqualTo: maxPrice).limit(to: 10)
         
-        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice).limit(to: 10)
         topCardView = nil
+        
         query.getDocuments { (snapshot, err) in
             hud.dismiss()
             if let err = err {
@@ -129,18 +176,18 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             var previousCardView: CardView?
             
             snapshot?.documents.forEach({ (documentSnapchot) in
-                let userDictionary = documentSnapchot.data()
-                let user = User(dictionary: userDictionary)
+                let itemDictionary = documentSnapchot.data()
+                let item = PostItem(dictionary: itemDictionary)
                 
-                self.users[user.uid ?? ""] = user
+//                self.users[item.ownerUid ?? ""] = item
             
-                let isNotCurrentUser =  user.uid != Auth.auth().currentUser?.uid
+                let isNotCurrentUser =  item.ownerUid != Auth.auth().currentUser?.uid
 //                let hasSwipedBefore = self.swipes[user.uid!] == nil
                 
                 let hasSwipedBefore = true
                 
                 if isNotCurrentUser && hasSwipedBefore {
-                    let cardView = self.setupCardFromUser(user: user)
+                    let cardView = self.setupItemsFromUser(item: item)
                     
                     previousCardView?.nextCardView = cardView
                     previousCardView = cardView
@@ -151,7 +198,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             })
         }
     }
-    var users = [String: User]()
+    
+    var items = [String: PostItem]()
     
     var topCardView: CardView?
     @objc func handleLike() {
@@ -222,8 +270,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
                 self.presesntMatchView(cardUID: cardUID)
-                
-                guard let cardUser = self.users[cardUID] else {return}
+//                TODO
+                guard let cardUser = self.items[cardUID] else {return}
                 
                 let data = [
                     "name": cardUser.name ?? "",
@@ -336,10 +384,20 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     //TODO: delete my items
     
-    fileprivate func setupCardFromUser(user: User) -> CardView {
+//    fileprivate func setupCardFromUser(user: User) -> CardView {
+//        let cardView = CardView(frame: .zero)
+//        cardView.delegate = self
+//        cardView.cardViewModel = user.toCardViewModel()
+//        cardsDeckView.addSubview(cardView)
+//        cardsDeckView.sendSubviewToBack(cardView)
+//        cardView.fillSuperview()
+//        return cardView
+//    }
+    
+    fileprivate func setupItemsFromUser(item: PostItem) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
-        cardView.cardViewModel = user.toCardViewModel()
+        cardView.cardViewModel = item.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()

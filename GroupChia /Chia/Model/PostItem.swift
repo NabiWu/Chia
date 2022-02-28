@@ -22,7 +22,7 @@ struct PostItem: ProducesCardViewModel {
     init(dictionary: [String: Any]){
         
         self.price = dictionary["price"] as? Int
-        self.name = dictionary["fullName"] as? String ?? ""
+        self.name = dictionary["name"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""
         self.ownerUid = dictionary["ownerUid"] as? String ?? ""
         self.description = dictionary["description"] as? String ?? ""
@@ -48,9 +48,9 @@ struct PostItem: ProducesCardViewModel {
         let discriptionString = NSAttributedString(string: description ?? "")
 
         var imageUrls = [String]()
-        if let url = imageUrl1 {imageUrls.append(url)}
-        if let url = imageUrl2 {imageUrls.append(url)}
-        if let url = imageUrl3 {imageUrls.append(url)}
+        if let url = imageUrl1 {if url != "" {imageUrls.append(url)}}
+        if let url = imageUrl2 {if url != "" {imageUrls.append(url)}}
+        if let url = imageUrl3 {if url != "" {imageUrls.append(url)}}
         return CardViewModel(uid: self.uid ?? "",imageNames: imageUrls, attributedString: attributedText, textAlignment: .left, discriptionString: discriptionString)
     }
 }
