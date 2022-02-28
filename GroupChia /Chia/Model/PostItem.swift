@@ -20,8 +20,8 @@ struct PostItem: ProducesCardViewModel {
         let attributedString = NSMutableAttributedString(string: description ?? "", attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .heavy)])
         
         attributedString.append(NSAttributedString(string: "\n" + String(price ?? 0), attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .bold)]))
+        let discriptionString = NSAttributedString(string: "")
         
-//        return CardViewModel(imageNames: [name], attributedString: attributedString, textAlignment: .center)
-        return CardViewModel(imageNames: ["name"], attributedString: attributedString, textAlignment: .center)
+        return CardViewModel(uid: "", imageNames: ["name"], attributedString: attributedString, textAlignment: .center, discriptionString: discriptionString)
     }
 }

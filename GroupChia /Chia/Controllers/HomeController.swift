@@ -31,8 +31,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
-        buttomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-        buttomControls.postButton.addTarget(self, action: #selector(handlePostItem), for: .touchUpInside)
+        bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        bottomControls.postButton.addTarget(self, action: #selector(handlePostItem), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()

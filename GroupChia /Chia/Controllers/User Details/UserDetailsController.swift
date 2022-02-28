@@ -14,7 +14,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     var cardViewModel: CardViewModel! {
         didSet {
             infoLabel.attributedText = cardViewModel.attributedString
-            
+            discriptionLabel.attributedText = cardViewModel.discriptionString
             swipingPhotosController.cardViewModel = cardViewModel
         }
     }
@@ -33,6 +33,12 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     let infoLabel: UILabel = {
         let label = UILabel()
         label.text = "User name 30\nDoctor\nSome bio text down below"
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let discriptionLabel : UILabel = {
+        let label = UILabel()
         label.numberOfLines = 0
         return label
     }()
@@ -111,8 +117,12 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(infoLabel)
         infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
         
+        scrollView.addSubview(discriptionLabel)
+        discriptionLabel.anchor(top: infoLabel.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16), size: .init(width: 300, height: 0))
+        
         scrollView.addSubview(dismissButton)
         dismissButton.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 25), size: .init(width: 50, height: 50))
+        
     }
     
     fileprivate let extraSwipingHeight: CGFloat = 80
