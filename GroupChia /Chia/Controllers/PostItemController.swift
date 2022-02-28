@@ -15,12 +15,13 @@ protocol PostItemControllerDelegate {
 
 class PostItemController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var delegate: PostItemControllerDelegate?
-    
+
+
     // instance properties
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
-    
+
     @objc func handleSelectPhoto(button: UIButton) {
         print("Select photo with button:", button)
         let imagePicker = CustomImagePickerController()
@@ -94,7 +95,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         tableView.keyboardDismissMode = .interactive
         
         fetchCurrentUser()
-        self.item = PostItem(name: "", description: "", price: 0)
+        item = PostItem(dictionary: [:])
     }
     
     var user: User?
@@ -107,29 +108,9 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
                 return
             }
             self.user = user
-//            self.loadUserPhotos()
             self.tableView.reloadData()
         }
     }
-// Don't need to load photes
-    
-//    fileprivate func loadUserPhotos() {
-//        if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
-//            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
-//        }
-//        if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
-//            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
-//        }
-//        if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
-//            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-//                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
-//        }
-//    }
     
     lazy var header: UIView = {
         let header = UIView()
@@ -266,14 +247,20 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
     @objc fileprivate func handleSave() {
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        let itemUid = UUID().uuidString
         let docData: [String: Any] = [
-            "uid": user?.uid as Any,
             "name": item?.name ?? "",
+            "description": item?.description ?? "",
+            "price": item?.price as Any,
+            "uid": itemUid as Any,
+            "ownerUid": user?.uid as Any,
+            "ownerName": user?.name ?? "",
+            
             "imageUrl1": item?.imageUrl1 ?? "",
             "imageUrl2": item?.imageUrl2 ?? "",
             "imageUrl3": item?.imageUrl3 ?? "",
-            "description": item?.description ?? "",
-            "price": item?.price as Any
+            
         ]
         
         let hud = JGProgressHUD(style: .dark)

@@ -11,17 +11,46 @@ struct PostItem: ProducesCardViewModel {
     var name: String?
     var description: String?
     var price: Int?
+    var uid: String?
+    var ownerUid: String?
+    var ownerName: String?
     
     var imageUrl1: String?
     var imageUrl2: String?
     var imageUrl3: String?
     
+    init(dictionary: [String: Any]){
+        
+        self.price = dictionary["price"] as? Int
+        self.name = dictionary["fullName"] as? String ?? ""
+        self.uid = dictionary["uid"] as? String ?? ""
+        self.ownerUid = dictionary["ownerUid"] as? String ?? ""
+        self.description = dictionary["description"] as? String ?? ""
+        self.ownerName = dictionary["ownerName"] as? String ?? ""
+        
+        self.imageUrl1 = dictionary["imageUrl1"] as? String
+        self.imageUrl2 = dictionary["imageUrl2"] as? String
+        self.imageUrl3 = dictionary["imageUrl3"] as? String
+    }
+    
+    
     func toCardViewModel() -> CardViewModel {
-        let attributedString = NSMutableAttributedString(string: description ?? "", attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .heavy)])
+        let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+
+        let priceString = price != nil ? "\(price!)" : "N\\A"
+
+        attributedText.append(NSAttributedString(string: "  \(priceString)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
+
+        let ownerName = ownerName != nil ? "\(ownerName!)" : "unkown user"
+
+        attributedText.append(NSAttributedString(string: "\n\(ownerName)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
         
-        attributedString.append(NSAttributedString(string: "\n" + String(price ?? 0), attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .bold)]))
-        let discriptionString = NSAttributedString(string: "")
-        
-        return CardViewModel(uid: "", imageNames: ["name"], attributedString: attributedString, textAlignment: .center, discriptionString: discriptionString)
+        let discriptionString = NSAttributedString(string: description ?? "")
+
+        var imageUrls = [String]()
+        if let url = imageUrl1 {imageUrls.append(url)}
+        if let url = imageUrl2 {imageUrls.append(url)}
+        if let url = imageUrl3 {imageUrls.append(url)}
+        return CardViewModel(uid: self.uid ?? "",imageNames: imageUrls, attributedString: attributedText, textAlignment: .left, discriptionString: discriptionString)
     }
 }

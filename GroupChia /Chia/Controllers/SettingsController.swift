@@ -110,6 +110,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     var user: User?
     
+    
     fileprivate func fetchCurrentUser() {
         Firestore.firestore().fetchCurrentUser { (user, err) in
             if let err = err {
