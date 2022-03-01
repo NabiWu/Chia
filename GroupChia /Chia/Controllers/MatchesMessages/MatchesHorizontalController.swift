@@ -36,6 +36,7 @@ class MatchesHorizontalController: LBTAListController<MatchCell, Match>, UIColle
     }
     
     fileprivate func fetchMatches() {
+//        TODO:delete
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("matches_messages").document(currentUserId).collection("matches").getDocuments { (querySnapshot, err) in
             

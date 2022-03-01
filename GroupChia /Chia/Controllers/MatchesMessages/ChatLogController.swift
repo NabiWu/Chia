@@ -78,6 +78,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
     
     fileprivate func saveToFromMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+//        TODO: add item collection and item uid
         let collection = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid)
         
         let data = ["text": customInputView.textView.text ?? "", "fromId": currentUserId, "toId": match.uid, "timestamp": Timestamp(date: Date())] as [String : Any]
@@ -121,6 +122,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
         print("fetch messages")
         
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+//      TODO
         let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid).order(by: "timestamp")
         
         listener = query.addSnapshotListener { querySnapshot, err in

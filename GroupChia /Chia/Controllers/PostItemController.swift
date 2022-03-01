@@ -279,6 +279,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
                 self.delegate?.didSaveItems()
             }
         }
+        
     }
     
     @objc fileprivate func handleCancel() {

@@ -33,6 +33,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.postButton.addTarget(self, action: #selector(handlePostItem), for: .touchUpInside)
+        bottomControls.specialButton.addTarget(self, action: #selector(handleManagePostItem), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()
@@ -315,6 +316,14 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
 //        addItem()
     }
     
+    @objc func handleManagePostItem() {
+        let layout = UICollectionViewFlowLayout()
+        let postItemCollectionViewController = PostItemCollectionViewController(collectionViewLayout: layout)
+//        postItemCollectionViewController.delegate = self
+        let navController = UINavigationController(rootViewController: postItemCollectionViewController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
     func didSaveItems() {
         fetchCurrentUser()
     }
