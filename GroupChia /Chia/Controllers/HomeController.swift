@@ -239,6 +239,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
 
         guard let uid = Auth.auth().currentUser?.uid else {return}
+        let currentUser = users[uid]
 
         self.presesntMatchView(cardUID: cardOwnerID)
 
@@ -262,7 +263,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         let collection = Firestore.firestore().collection("matches_messages").document(uid).collection(cardOwnerID)
         
-        let messageData = ["text": "I am intereted in your \(cardUID)!", "fromId": uid, "toId": cardOwnerID, "timestamp": Timestamp(date: Date())] as [String : Any]
+        let messageData = ["text": "I am intereted in your item!", "fromId": uid, "toId": cardOwnerID, "timestamp": Timestamp(date: Date())] as [String : Any]
         
         collection.addDocument(data: messageData) { err in
             if let err = err {
@@ -301,8 +302,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
 
         let toData = ["text": "I am intereted in your item!",
-                      "name": self.user?.name ?? "",
-                      "profileImageUrl": self.user?.imageUrl1 ?? "",
+                      "name": currentUser?.name ?? "",
+                      "profileImageUrl": currentUser?.imageUrl1 ?? "",
                     "timestamp": Timestamp(date: Date()),
                     "uid": uid
         ] as [String : Any]
