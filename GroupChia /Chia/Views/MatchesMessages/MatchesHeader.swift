@@ -9,7 +9,7 @@ import UIKit
 
 class MatchesHeader: UICollectionReusableView {
     
-    let newMatchesLabel = UILabel(text: "New Matches", font: .boldSystemFont(ofSize: 18), textColor: #colorLiteral(red: 0.9826375842, green: 0.3476698399, blue: 0.447683692, alpha: 1))
+    let newMatchesLabel = UILabel(text: "Interested Items", font: .boldSystemFont(ofSize: 18), textColor: #colorLiteral(red: 0.9826375842, green: 0.3476698399, blue: 0.447683692, alpha: 1))
     
     let matchesHorizontalController = MatchesHorizontalController()
     

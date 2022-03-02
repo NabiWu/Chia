@@ -16,13 +16,15 @@ protocol ProducesCardViewModel {
 class CardViewModel {
     // we'll define the properties that are view will display/render out
     let uid: String
+    let ownerUID: String
     let imageUrls: [String]
     let attributedString: NSAttributedString
     let discriptionString: NSAttributedString
     let textAlignment: NSTextAlignment
     
-    init(uid: String, imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment, discriptionString: NSAttributedString) {
+    init(uid: String, ownerUID: String, imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment, discriptionString: NSAttributedString) {
         self.uid = uid
+        self.ownerUID = ownerUID
         self.imageUrls = imageNames
         self.attributedString = attributedString
         self.textAlignment = textAlignment

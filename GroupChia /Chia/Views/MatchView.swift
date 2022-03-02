@@ -52,7 +52,7 @@ class MatchView: UIView {
     
     fileprivate let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "You and X have liked\neach other"
+        label.text = "Congrats, an intererested message has been sent"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 20)

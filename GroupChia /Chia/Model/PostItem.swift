@@ -51,6 +51,6 @@ struct PostItem: ProducesCardViewModel {
         if let url = imageUrl1 {if url != "" {imageUrls.append(url)}}
         if let url = imageUrl2 {if url != "" {imageUrls.append(url)}}
         if let url = imageUrl3 {if url != "" {imageUrls.append(url)}}
-        return CardViewModel(uid: self.uid ?? "",imageNames: imageUrls, attributedString: attributedText, textAlignment: .left, discriptionString: discriptionString)
+        return CardViewModel(uid: self.uid ?? "", ownerUID: self.ownerUid ?? "" ,imageNames: imageUrls, attributedString: attributedText, textAlignment: .left, discriptionString: discriptionString)
     }
 }

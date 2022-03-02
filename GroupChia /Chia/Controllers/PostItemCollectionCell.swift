@@ -18,7 +18,6 @@ class UserProfilePhotoCell: UICollectionViewCell {
     
     var postItem: PostItem? {
         didSet {
-//            print(post?.imageUrl ?? "")
             
             guard let imageUrl = postItem?.imageUrl1 else { return }
             
@@ -45,7 +44,6 @@ class UserProfilePhotoCell: UICollectionViewCell {
     
     let photoImageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .red
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv

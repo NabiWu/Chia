@@ -37,6 +37,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         setupLayout()
         
         fetchCurrentUser()
+        fetchUsersFromFirestore()
     }
     
     @objc fileprivate func handleMessage(){
@@ -108,50 +109,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     var lastFetchedUser: User?
     
-//    fileprivate func fetchUsersFromFirestore() {
-//
-//        let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
-//        let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
-//
-//        let hud = JGProgressHUD(style: .dark)
-//        hud.textLabel.text = "Fetching Users"
-//        hud.show(in: view)
-//
-//        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minPrice).whereField("age", isLessThanOrEqualTo: maxPrice).limit(to: 10)
-//        topCardView = nil
-//        query.getDocuments { (snapshot, err) in
-//            hud.dismiss()
-//            if let err = err {
-//                print("Failed to fetch users:", err)
-//                return
-//            }
-//
-//            //linked list
-//            var previousCardView: CardView?
-//
-//            snapshot?.documents.forEach({ (documentSnapchot) in
-//                let userDictionary = documentSnapchot.data()
-//                let user = User(dictionary: userDictionary)
-//
-//                self.users[user.uid ?? ""] = user
-//
-//                let isNotCurrentUser =  user.uid != Auth.auth().currentUser?.uid
-////                let hasSwipedBefore = self.swipes[user.uid!] == nil
-//
-//                let hasSwipedBefore = true
-//
-//                if isNotCurrentUser && hasSwipedBefore {
-//                    let cardView = self.setupCardFromUser(user: user)
-//
-//                    previousCardView?.nextCardView = cardView
-//                    previousCardView = cardView
-//                    if self.topCardView == nil {
-//                        self.topCardView = cardView
-//                    }
-//                }
-//            })
-//        }
-//    }
+    
+
     
     fileprivate func fetchItemsFromFirestore() {
         
@@ -180,7 +139,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let itemDictionary = documentSnapchot.data()
                 let item = PostItem(dictionary: itemDictionary)
                 
-//                self.users[item.ownerUid ?? ""] = item
+                self.items[item.uid ?? ""] = item
             
                 let isNotCurrentUser =  item.ownerUid != Auth.auth().currentUser?.uid
 //                let hasSwipedBefore = self.swipes[user.uid!] == nil
@@ -213,7 +172,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
         guard let cardUID = topCardView?.cardViewModel.uid else {return}
-
+        guard let cardOwnerID = topCardView?.cardViewModel.ownerUID else {return}
+        guard let cardOwnerImage = topCardView?.cardViewModel.imageUrls[0] else {return}
 
         let documentData = [
             cardUID: didLike
@@ -233,7 +193,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
                     print("Successfully update swipe...")
                     if didLike == 1{
-                        self.checkIfMatchExists(cardUID: cardUID)
+                        self.checkIfMatchExists(cardUID: cardUID, cardOwnerID: cardOwnerID, cardOwnerImage: cardOwnerImage)
                     }
                 }
             } else {
@@ -244,7 +204,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                     }
                     print("Successfully saved swipe...")
                     if didLike == 1{
-                        self.checkIfMatchExists(cardUID: cardUID)
+                        self.checkIfMatchExists(cardUID: cardUID, cardOwnerID: cardOwnerID, cardOwnerImage: cardOwnerImage)
                     }
                 }
             }
@@ -252,60 +212,106 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
  
     }
     
-    
-    // TO DO: Go to private message
-    fileprivate func checkIfMatchExists(cardUID: String){
-        print("Detecting match")
-        
-        Firestore.firestore().collection("swipes").document(cardUID).getDocument { snapshot, err in
+    var users = [String: User]()
+    fileprivate func fetchUsersFromFirestore() {
+
+        let query = Firestore.firestore().collection("users")
+        topCardView = nil
+        query.getDocuments { (snapshot, err) in
             if let err = err {
-                print("Fail to fetch document for card user:", err)
+                print("Failed to fetch users:", err)
                 return
             }
-            
-            guard let data = snapshot?.data() else {return}
-            print(data)
-            
-            guard let uid = Auth.auth().currentUser?.uid else {return}
-            
-            let hasMatched = data[uid] as? Int == 1
-            if hasMatched {
-                self.presesntMatchView(cardUID: cardUID)
-//                TODO
-                guard let cardUser = self.items[cardUID] else {return}
-                
-                let data = [
-                    "name": cardUser.name ?? "",
-                    "profileImageUrl": cardUser.imageUrl1 ?? "",
-                    "uid": cardUID,
-                    "timestamp": Timestamp(date: Date())
-                ] as [String : Any]
-                
-                Firestore.firestore().collection("matches_messages").document(uid).collection("matches").document(cardUID).setData(data) { err in
-                    if let err = err {
-                        print("Failed to save match info:", err)
-                        return
-                    }
-                }
-                
-                guard let currentUser = self.user else {return}
-                
-                let otherMatchData = [
-                    "name": currentUser.name ?? "",
-                    "profileImageUrl": currentUser.imageUrl1 ?? "",
-                    "uid": currentUser.uid ?? "",
-                    "timestamp": Timestamp(date: Date())
-                ] as [String : Any]
-                
-                Firestore.firestore().collection("matches_messages").document(cardUID).collection("matches").document(uid).setData(otherMatchData) { err in
-                    if let err = err {
-                        print("Failed to save match info:", err)
-                        return
-                    }
-                }
-            }
+            snapshot?.documents.forEach({ (documentSnapchot) in
+            let userDictionary = documentSnapchot.data()
+            let user = User(dictionary: userDictionary)
+            self.users[user.uid ?? ""] = user
+
+            })
         }
     }
+    
+    // TO DO: Go to private message
+    fileprivate func checkIfMatchExists(cardUID: String, cardOwnerID: String, cardOwnerImage: String){
+        print("Detecting match")
+        
+        let cardOwner = users[cardOwnerID]
+        
+
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+
+        self.presesntMatchView(cardUID: cardOwnerID)
+
+        guard let postItem = self.items[cardUID] else {return}
+
+            let data = [
+                "name": postItem.name ?? "",
+                "profileImageUrl": postItem.imageUrl1 ?? "",
+                "uid": cardUID,
+                "ownerUid": cardOwnerID,
+                "timestamp": Timestamp(date: Date())
+            ] as [String : Any]
+
+            Firestore.firestore().collection("matches_messages").document(uid).collection("likedItems").document(cardUID).setData(data) { err in
+                if let err = err {
+                    print("Failed to save match info:", err)
+                    return
+                }
+            }
+        
+        
+        let collection = Firestore.firestore().collection("matches_messages").document(uid).collection(cardOwnerID)
+        
+        let messageData = ["text": "I am intereted in your \(cardUID)!", "fromId": uid, "toId": cardOwnerID, "timestamp": Timestamp(date: Date())] as [String : Any]
+        
+        collection.addDocument(data: messageData) { err in
+            if let err = err {
+                print("Failed to save message:", err)
+                return
+            }
+             print("Successfully saved msg into Firestore")
+            
+        }
+        
+        let toCollection = Firestore.firestore().collection("matches_messages").document(cardOwnerID).collection(uid)
+        
+        toCollection.addDocument(data: messageData) { err in
+            if let err = err {
+                print("Failed to save message:", err)
+                return
+            }
+             print("Successfully saved msg into Firestore")
+        }
+        
+        
+        let recentMessageData = ["text": "I am intereted in your item!",
+                                 "name": cardOwner?.name ?? "",
+                                 "profileImageUrl": cardOwner?.imageUrl1 ?? "",
+                                 "timestamp": Timestamp(date: Date()),
+                                 "uid": cardOwnerID
+        ] as [String : Any]
+
+        Firestore.firestore().collection("matches_messages").document(uid).collection("recent_messages").document(cardOwnerID).setData(recentMessageData) { err in
+            if let err = err {
+                print("Failed to save recent messages", err)
+                return
+            }
+            print("saved recent message")
+        }
+        
+
+        let toData = ["text": "I am intereted in your item!",
+                      "name": self.user?.name ?? "",
+                      "profileImageUrl": self.user?.imageUrl1 ?? "",
+                    "timestamp": Timestamp(date: Date()),
+                    "uid": uid
+        ] as [String : Any]
+
+        Firestore.firestore().collection("matches_messages").document(cardOwnerID).collection("recent_messages").document(uid).setData(toData)
+
+    }
+    
+    
     
     @objc func handlePostItem() {
         let postItemController = PostItemController()
