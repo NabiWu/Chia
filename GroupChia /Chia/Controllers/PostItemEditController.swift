@@ -21,7 +21,7 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
-    var postItem : PostItem?
+    
     @objc func handleSelectPhoto(button: UIButton) {
         print("Select photo with button:", button)
         let imagePicker = CustomImagePickerController()
@@ -64,11 +64,11 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
                 print("Finished getting download url:", url?.absoluteString ?? "")
                 
                 if imageButton == self.image1Button {
-                    self.item?.imageUrl1 = url?.absoluteString
+                    self.postItem?.imageUrl1 = url?.absoluteString
                 } else if imageButton == self.image2Button {
-                    self.item?.imageUrl2 = url?.absoluteString
+                    self.postItem?.imageUrl2 = url?.absoluteString
                 } else {
-                    self.item?.imageUrl3 = url?.absoluteString
+                    self.postItem?.imageUrl3 = url?.absoluteString
                 }
             })
         }
@@ -92,12 +92,16 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
+        loadCurrentItem()
         fetchCurrentUser()
 //        item = PostItem(dictionary: [:])
     }
     
     var user: User?
-    var item: PostItem?
+    var postItem : PostItem?
+    fileprivate func loadCurrentItem() {
+        loadItemPhotos()
+    }
     
     fileprivate func fetchCurrentUser() {
         Firestore.firestore().fetchCurrentUser { (user, err) in
@@ -107,6 +111,24 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
             }
             self.user = user
             self.tableView.reloadData()
+        }
+    }
+
+    fileprivate func loadItemPhotos() {
+        if let imageUrl = postItem?.imageUrl1, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl = postItem?.imageUrl2, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl = postItem?.imageUrl3, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
     }
     
@@ -165,56 +187,21 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         return section == 0 ? 0 : 1
     }
     
-//    @objc fileprivate func handleMinPriceChange(slider: UISlider){
-//
-//        evaluateMinMax()
-//    }
-//
-//    @objc fileprivate func handleMaxPriceChange(slider: UISlider){
-//        evaluateMinMax()
-//    }
-//
-//
-//    fileprivate func evaluateMinMax() {
-//        guard let priceRangeCell = tableView.cellForRow(at: [3, 0]) as? PriceRangeCell else { return }
-//        let minValue = Int(priceRangeCell.minSlider.value)
-//        var maxValue = Int(priceRangeCell.maxSlider.value)
-//        maxValue = max(minValue, maxValue)
-//        priceRangeCell.maxSlider.value = Float(maxValue)
-//        priceRangeCell.minLabel.text = "Min \(minValue)"
-//        priceRangeCell.maxLabel.text = "Max \(maxValue)"
-//
-//        user?.minSeekingPrice = minValue
-//        user?.maxSeekingPrice = maxValue
-//    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.section == 3 {
-//            let priceRangeCell = PriceRangeCell(style: .default, reuseIdentifier: nil)
-//            priceRangeCell.minSlider.addTarget(self, action: #selector(handleMinPriceChange), for: .valueChanged)
-//            priceRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxPriceChange), for: .valueChanged)
-//
-//            let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
-//            let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
-//
-//            priceRangeCell.minLabel.text = "Min \(minPrice)"
-//            priceRangeCell.maxLabel.text = "Max \(maxPrice)"
-//            priceRangeCell.minSlider.value = Float(minPrice)
-//            priceRangeCell.maxSlider.value = Float(maxPrice)
-//            return priceRangeCell
-//        }
-        
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
         switch indexPath.section {
         case 1:
             cell.textField.placeholder = "Enter Name"
+            cell.textField.text = postItem?.name
             cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
         case 2:
             cell.textField.placeholder = "Enter Description"
+            cell.textField.text = postItem?.description
             cell.textField.addTarget(self, action: #selector(handleDescriptionChange), for: .editingChanged)
         default:
             cell.textField.placeholder = "Enter Price"
+            cell.textField.text = "\(postItem?.price ?? 0)"
             cell.textField.addTarget(self, action: #selector(handlePriceChange), for: .editingChanged)
         }
         
@@ -222,15 +209,15 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
-        self.item?.name = textField.text
+        self.postItem?.name = textField.text
     }
     
     @objc fileprivate func handleDescriptionChange(textField: UITextField) {
-        self.item?.description = textField.text
+        self.postItem?.description = textField.text
     }
     
     @objc fileprivate func handlePriceChange(textField: UITextField) {
-        self.item?.price = Int(textField.text ?? "")
+        self.postItem?.price = Int(textField.text ?? "")
     }
     
     fileprivate func setupNavigationItems() {
@@ -256,25 +243,25 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
-        let itemUid = UUID().uuidString
+        let itemUid = postItem?.uid
         let docData: [String: Any] = [
-            "name": item?.name ?? "",
-            "description": item?.description ?? "",
-            "price": item?.price as Any,
+            "name": postItem?.name ?? "",
+            "description": postItem?.description ?? "",
+            "price": postItem?.price as Any,
             "uid": itemUid as Any,
             "ownerUid": user?.uid as Any,
             "ownerName": user?.name ?? "",
             
-            "imageUrl1": item?.imageUrl1 ?? "",
-            "imageUrl2": item?.imageUrl2 ?? "",
-            "imageUrl3": item?.imageUrl3 ?? "",
+            "imageUrl1": postItem?.imageUrl1 ?? "",
+            "imageUrl2": postItem?.imageUrl2 ?? "",
+            "imageUrl3": postItem?.imageUrl3 ?? "",
             
         ]
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Saving settings"
         hud.show(in: view)
-        Firestore.firestore().collection("items").document(UUID().uuidString).setData(docData) { (err) in
+        Firestore.firestore().collection("items").document(itemUid!).updateData(docData) { (err) in
             hud.dismiss()
             if let err = err {
                 print("Failed to save user settings:", err)
@@ -286,9 +273,9 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
                 print("Dismissal complete")
                 self.delegate?.didEditItem()
             }
+            
         }
-        
-    }
+        }
     
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
