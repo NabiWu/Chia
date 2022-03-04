@@ -34,7 +34,7 @@ class UserProfilePhotoCell: UICollectionViewCell {
                 let photoImage = UIImage(data: imageData)
                 
                 DispatchQueue.main.async {
-                    self.photoImageView.image = photoImage
+                    self.photoImageView.sd_setImage(with: URL(string: imageUrl))
                 }
                 
             }.resume()

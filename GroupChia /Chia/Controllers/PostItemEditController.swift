@@ -1,27 +1,27 @@
 //
-//  PostItemController.swift
+//  PostItemEditController.swift
 //  Chia
 //
-//  Created by Chen Yu on 2022/2/25.
+//  Created by Chen Yu on 2022/3/2.
 //
 
 import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
-protocol PostItemControllerDelegate {
-    func didSaveItems()
+protocol PostItemEditControllerDelegate {
+    func didEditItem()
 }
 
-class PostItemController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var delegate: PostItemControllerDelegate?
+class PostItemEditController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var delegate: PostItemEditControllerDelegate?
 
 
     // instance properties
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
-
+    var postItem : PostItem?
     @objc func handleSelectPhoto(button: UIButton) {
         print("Select photo with button:", button)
         let imagePicker = CustomImagePickerController()
@@ -87,15 +87,13 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationItems()
         tableView = UITableView(frame: .zero, style: .grouped)
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
-        
         fetchCurrentUser()
-        item = PostItem(dictionary: [:])
+//        item = PostItem(dictionary: [:])
     }
     
     var user: User?
@@ -240,8 +238,18 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
+            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
+            UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(handleDelete))
         ]
+    }
+    
+    @objc fileprivate func handleDelete() {
+        if let id = postItem?.uid {
+            Firestore.firestore().collection("items").document(id).delete()
+            print("delete it!")
+            self.delegate?.didEditItem()
+            dismiss(animated: true)
+        }
     }
     
     @objc fileprivate func handleSave() {
@@ -266,7 +274,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Saving settings"
         hud.show(in: view)
-        Firestore.firestore().collection("items").document(itemUid).setData(docData) { (err) in
+        Firestore.firestore().collection("items").document(UUID().uuidString).setData(docData) { (err) in
             hud.dismiss()
             if let err = err {
                 print("Failed to save user settings:", err)
@@ -276,7 +284,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
             print("Finished saving user info")
             self.dismiss(animated: true) {
                 print("Dismissal complete")
-                self.delegate?.didSaveItems()
+                self.delegate?.didEditItem()
             }
         }
         

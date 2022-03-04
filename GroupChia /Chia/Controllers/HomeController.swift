@@ -38,6 +38,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         fetchCurrentUser()
         fetchUsersFromFirestore()
+        fetchItemsFromFirestore()
     }
     
     @objc fileprivate func handleMessage(){

@@ -10,7 +10,7 @@ import Firebase
 import JGProgressHUD
 
 
-class PostItemCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class PostItemCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PostItemEditControllerDelegate {
     let cellId = "cellId"
     var postItems = [PostItem]()
     
@@ -21,15 +21,17 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
+        print("collectionView did load")
         setupNavigationItems()
         
         collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         fetchMyPostItems()
 
     }
     
     fileprivate func setupNavigationItems() {
-        navigationItem.title = "View my items"
+        navigationItem.title = "Edit my items"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
 //        navigationItem.rightBarButtonItems = [
@@ -44,6 +46,7 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
     fileprivate func fetchMyPostItems() {
         let query = Firestore.firestore().collection("items")
         let hud = JGProgressHUD(style: .dark)
+        self.postItems = [PostItem]()
         hud.textLabel.text = "Fetching Items"
         hud.show(in: view)
         
@@ -94,11 +97,21 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(postItems[indexPath.row].name!)
+        let postItemEditController = PostItemEditController()
+        postItemEditController.delegate = self
+        postItemEditController.postItem = postItems[indexPath.row]
+        let navController = UINavigationController(rootViewController: postItemEditController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2) / 2
+        let width = (view.frame.width - 20) / 2
         return CGSize(width: width, height: width*1.5)
     }
-
+    
+    func didEditItem() {
+//      TODO: optimize don't need to refetch 
+        fetchMyPostItems()
+    }
 }

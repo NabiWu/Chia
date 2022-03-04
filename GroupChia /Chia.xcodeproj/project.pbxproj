@@ -49,6 +49,7 @@
 		25EB905D27C305E5005E9408 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */; };
 		4B28FFD027CD90D600E79465 /* PostItemCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28FFCF27CD90D600E79465 /* PostItemCollectionViewController.swift */; };
 		4B28FFD227CD99A900E79465 /* PostItemCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28FFD127CD99A900E79465 /* PostItemCollectionCell.swift */; };
+		4B28FFD427D03CB400E79465 /* PostItemEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28FFD327D03CB400E79465 /* PostItemEditController.swift */; };
 		4B3AB78D27C943F2003B423F /* PostItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB78C27C943F2003B423F /* PostItemController.swift */; };
 		4B3AB79127C94AA4003B423F /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB79027C94AA4003B423F /* PostItem.swift */; };
 		EFF7F0EAF9FC634811080253 /* Pods_Chia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */; };
@@ -100,6 +101,7 @@
 		25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		4B28FFCF27CD90D600E79465 /* PostItemCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemCollectionViewController.swift; sourceTree = "<group>"; };
 		4B28FFD127CD99A900E79465 /* PostItemCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemCollectionCell.swift; sourceTree = "<group>"; };
+		4B28FFD327D03CB400E79465 /* PostItemEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemEditController.swift; sourceTree = "<group>"; };
 		4B3AB78C27C943F2003B423F /* PostItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemController.swift; sourceTree = "<group>"; };
 		4B3AB79027C94AA4003B423F /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
 		61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,7 @@
 				25EB903527C16BF1005E9408 /* HomeController.swift */,
 				4B28FFCF27CD90D600E79465 /* PostItemCollectionViewController.swift */,
 				4B28FFD127CD99A900E79465 /* PostItemCollectionCell.swift */,
+				4B28FFD327D03CB400E79465 /* PostItemEditController.swift */,
 				25EB905827C2B3EA005E9408 /* RegistrationController.swift */,
 				25EB905C27C305E5005E9408 /* RegistrationViewModel.swift */,
 				252431A727C454760025EAB9 /* Bindable.swift */,
@@ -418,6 +421,7 @@
 				2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
+				4B28FFD427D03CB400E79465 /* PostItemEditController.swift in Sources */,
 				25EB903227C16BF1005E9408 /* AppDelegate.swift in Sources */,
 				4B28FFD227CD99A900E79465 /* PostItemCollectionCell.swift in Sources */,
 				2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */,
@@ -602,7 +606,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WB46B9M36F;
+				DEVELOPMENT_TEAM = 72LUA97Y6K;
 				EXCLUDED_ARCHS = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chia/Info.plist;
@@ -694,7 +698,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WB46B9M36F;
+				DEVELOPMENT_TEAM = 72LUA97Y6K;
 				EXCLUDED_ARCHS = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chia/Info.plist;
