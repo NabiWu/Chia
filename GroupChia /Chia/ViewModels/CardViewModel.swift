@@ -8,25 +8,32 @@
 
 import UIKit
 
+// protocol for Model
 protocol ProducesCardViewModel {
     func toCardViewModel() -> CardViewModel
 }
 
 class CardViewModel {
     // we'll define the properties that are view will display/render out
-    let imageNames: [String]
+    let uid: String
+    let ownerUID: String
+    let imageUrls: [String]
     let attributedString: NSAttributedString
+    let discriptionString: NSAttributedString
     let textAlignment: NSTextAlignment
     
-    init(imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
-        self.imageNames = imageNames
+    init(uid: String, ownerUID: String, imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment, discriptionString: NSAttributedString) {
+        self.uid = uid
+        self.ownerUID = ownerUID
+        self.imageUrls = imageNames
         self.attributedString = attributedString
         self.textAlignment = textAlignment
+        self.discriptionString = discriptionString
     }
     
     fileprivate var imageIndex = 0 {
         didSet{
-            let imageUrl = imageNames[imageIndex]
+            let imageUrl = imageUrls[imageIndex]
 //            let image = UIImage(named: imageNmae)
             imageIndexObserver?(imageIndex, imageUrl)
         }
@@ -36,7 +43,7 @@ class CardViewModel {
     var imageIndexObserver: ((Int, String?) -> ())?
     
     func advanceToNextPhoto(){
-        imageIndex = min( imageIndex + 1, imageNames.count - 1)
+        imageIndex = min( imageIndex + 1, imageUrls.count - 1)
     }
     
     func goToPreviousPhoto(){

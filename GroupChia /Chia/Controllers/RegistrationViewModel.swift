@@ -47,8 +47,20 @@ class RegistrationViewModel {
             }
             print("Successfully register user:", res?.user.uid ?? "")
             self.saveImageToFirebase(completion: completion)
- 
+        
         }
+        
+//        Firestore.firestore().collection("cities").document("LA").setData([
+//            "name": "Los Angeles",
+//            "state": "CA",
+//            "country": "USA"
+//        ]) { err in
+//            if let err = err {
+//                print("Error writing document: \(err)")
+//            } else {
+//                print("Document successfully written!")
+//            }
+//        }
     }
     
     fileprivate func saveImageToFirebase(completion: @escaping (Error?) ->()){
@@ -78,7 +90,14 @@ class RegistrationViewModel {
     
     fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()){
         let uid = Auth.auth().currentUser?.uid ?? ""
-        let docData = ["fullName": fullName ?? "", "uid": uid, "imageUrl1": imageUrl]
+        let docData: [String: Any] = [
+            "fullName": fullName ?? "",
+            "uid": uid,
+            "imageUrl1": imageUrl,
+            "age": 18,
+            "minSeekingPrice": SettingsController.defaultMinSeekingPrice,
+            "maxSeekingPrice": SettingsController.defaultMaxSeekingPrice
+        ]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
             if let err = err {
                 completion(err)
@@ -88,8 +107,8 @@ class RegistrationViewModel {
         }
     }
     
-    fileprivate func checkFormValidity() {
-        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
+    func checkFormValidity() {
+        let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && bindableImage.value != nil
         bindableIsFormValid.value = isFormValid
         
     }

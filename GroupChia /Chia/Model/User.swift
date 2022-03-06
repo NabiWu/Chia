@@ -16,6 +16,7 @@ struct User: ProducesCardViewModel{
     var imageUrl2: String?
     var imageUrl3: String?
     var uid: String?
+    var bio: String?
     
     var minSeekingPrice: Int?
     var maxSeekingPrice: Int?
@@ -31,6 +32,7 @@ struct User: ProducesCardViewModel{
         self.uid = dictionary["uid"] as? String ?? ""
         self.minSeekingPrice = dictionary["minSeekingPrice"] as? Int
         self.maxSeekingPrice = dictionary["maxSeekingPrice"] as? Int
+        self.bio = dictionary["bio"] as? String ?? ""
     }
     
     func toCardViewModel() -> CardViewModel {
@@ -43,12 +45,13 @@ struct User: ProducesCardViewModel{
         let professionString = profession != nil ? "\(profession!)" : "Not available"
         
         attributedText.append(NSAttributedString(string: "\n\(professionString)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+        let discriptionString = NSAttributedString(string: bio ?? "")
         
         var imageUrls = [String]()
-        if let url = imageUrl1 {imageUrls.append(url)}
-        if let url = imageUrl2 {imageUrls.append(url)}
-        if let url = imageUrl3 {imageUrls.append(url)}
-        return CardViewModel(imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
+        if let url = imageUrl1 {if url != "" {imageUrls.append(url)}}
+        if let url = imageUrl2 {if url != "" {imageUrls.append(url)}}
+        if let url = imageUrl3 {if url != "" {imageUrls.append(url)}}
+        return CardViewModel(uid: self.uid ?? "", ownerUID: self.uid ?? "" ,imageNames: imageUrls, attributedString: attributedText, textAlignment: .left, discriptionString: discriptionString)
     }
 }
 

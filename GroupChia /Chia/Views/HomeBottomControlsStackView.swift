@@ -18,7 +18,7 @@ class HomeBottomControlsStackView: UIStackView {
     
     let refreshButton = createButton(image: UIImage(named: "refresh_circle")!)
     let dislikeButton = createButton(image: UIImage(named: "dismiss_circle")!)
-    let superLikeButton = createButton(image: UIImage(named: "super_like_circle")!)
+    let postButton = createButton(image: UIImage(systemName: "square.and.arrow.up")!)
     let likeButton = createButton(image: UIImage(named: "like_circle")!)
     let specialButton = createButton(image: UIImage(named: "boost_circle")!)
 
@@ -28,7 +28,7 @@ class HomeBottomControlsStackView: UIStackView {
         distribution = .fillEqually
         heightAnchor.constraint(equalToConstant: 100).isActive = true
 
-        [refreshButton, dislikeButton, superLikeButton, likeButton, specialButton].forEach { (button) in
+        [refreshButton, dislikeButton, postButton, likeButton, specialButton].forEach { (button) in
             self.addArrangedSubview(button)
         }
     }

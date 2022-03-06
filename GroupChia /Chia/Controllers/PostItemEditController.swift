@@ -1,29 +1,22 @@
 //
-//  SettingsController.swift
+//  PostItemEditController.swift
 //  Chia
 //
-//  Created by Bohan Wu on 2/22/22.
+//  Created by Chen Yu on 2022/3/2.
 //
 
 import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
-
-protocol SettingsControllerDelegate {
-    func didSaveSettings()
+protocol PostItemEditControllerDelegate {
+    func didEditItem()
 }
 
-class CustomImagePickerController: UIImagePickerController {
-    
-    var imageButton: UIButton?
-    
-}
+class PostItemEditController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var delegate: PostItemEditControllerDelegate?
 
-class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    var delegate: SettingsControllerDelegate?
-    
+
     // instance properties
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
@@ -71,11 +64,11 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
                 print("Finished getting download url:", url?.absoluteString ?? "")
                 
                 if imageButton == self.image1Button {
-                    self.user?.imageUrl1 = url?.absoluteString
+                    self.postItem?.imageUrl1 = url?.absoluteString
                 } else if imageButton == self.image2Button {
-                    self.user?.imageUrl2 = url?.absoluteString
+                    self.postItem?.imageUrl2 = url?.absoluteString
                 } else {
-                    self.user?.imageUrl3 = url?.absoluteString
+                    self.postItem?.imageUrl3 = url?.absoluteString
                 }
             })
         }
@@ -94,17 +87,21 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationItems()
         tableView = UITableView(frame: .zero, style: .grouped)
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
-        
+        loadCurrentItem()
         fetchCurrentUser()
+//        item = PostItem(dictionary: [:])
     }
     
     var user: User?
+    var postItem : PostItem?
+    fileprivate func loadCurrentItem() {
+        loadItemPhotos()
+    }
     
     fileprivate func fetchCurrentUser() {
         Firestore.firestore().fetchCurrentUser { (user, err) in
@@ -113,23 +110,22 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
                 return
             }
             self.user = user
-            self.loadUserPhotos()
             self.tableView.reloadData()
         }
     }
-    
-    fileprivate func loadUserPhotos() {
-        if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+
+    fileprivate func loadItemPhotos() {
+        if let imageUrl = postItem?.imageUrl1, let url = URL(string: imageUrl) {
             SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
-        if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
+        if let imageUrl = postItem?.imageUrl2, let url = URL(string: imageUrl) {
             SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
-        if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
+        if let imageUrl = postItem?.imageUrl3, let url = URL(string: imageUrl) {
             SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
@@ -168,13 +164,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         case 1:
             headerLabel.text = "Name"
         case 2:
-            headerLabel.text = "Profession"
-        case 3:
-            headerLabel.text = "Age"
-        case 4:
-            headerLabel.text = "Bio"
+            headerLabel.text = "Description"
         default:
-            headerLabel.text = "Seeking Price Range"
+            headerLabel.text = "Price"
         }
         headerLabel.font = UIFont.boldSystemFont(ofSize: 16)
         return headerLabel
@@ -188,114 +180,88 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 6
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? 0 : 1
     }
     
-    @objc fileprivate func handleMinPriceChange(slider: UISlider){
-        
-        evaluateMinMax()
-    }
-    
-    @objc fileprivate func handleMaxPriceChange(slider: UISlider){
-        evaluateMinMax()
-    }
-    
-    
-    fileprivate func evaluateMinMax() {
-        guard let priceRangeCell = tableView.cellForRow(at: [5, 0]) as? PriceRangeCell else { return }
-        let minValue = Int(priceRangeCell.minSlider.value)
-        var maxValue = Int(priceRangeCell.maxSlider.value)
-        maxValue = max(minValue, maxValue)
-        priceRangeCell.maxSlider.value = Float(maxValue)
-        priceRangeCell.minLabel.text = "Min \(minValue)"
-        priceRangeCell.maxLabel.text = "Max \(maxValue)"
-        
-        user?.minSeekingPrice = minValue
-        user?.maxSeekingPrice = maxValue
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 5 {
-            let priceRangeCell = PriceRangeCell(style: .default, reuseIdentifier: nil)
-            priceRangeCell.minSlider.addTarget(self, action: #selector(handleMinPriceChange), for: .valueChanged)
-            priceRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxPriceChange), for: .valueChanged)
-            
-            priceRangeCell.minLabel.text = "Min \(user?.minSeekingPrice ?? -1)"
-            priceRangeCell.maxLabel.text = "Max \(user?.maxSeekingPrice ?? -1)"
-            priceRangeCell.minSlider.value = Float(user?.minSeekingPrice ?? -1)
-            priceRangeCell.maxSlider.value = Float(user?.maxSeekingPrice ?? -1)
-            return priceRangeCell
-        }
-        
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
         switch indexPath.section {
         case 1:
             cell.textField.placeholder = "Enter Name"
-            cell.textField.text = user?.name
+            cell.textField.text = postItem?.name
             cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
         case 2:
-            cell.textField.placeholder = "Enter Profession"
-            cell.textField.text = user?.profession
-            cell.textField.addTarget(self, action: #selector(handleProfessionChange), for: .editingChanged)
-        case 3:
-            cell.textField.placeholder = "Enter Age"
-            cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
-            if let age = user?.age {
-                cell.textField.text = String(age)
-            }
+            cell.textField.placeholder = "Enter Description"
+            cell.textField.text = postItem?.description
+            cell.textField.addTarget(self, action: #selector(handleDescriptionChange), for: .editingChanged)
         default:
-            cell.textField.placeholder = "Enter Bio"
+            cell.textField.placeholder = "Enter Price"
+            cell.textField.text = "\(postItem?.price ?? 0)"
+            cell.textField.addTarget(self, action: #selector(handlePriceChange), for: .editingChanged)
         }
         
         return cell
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
-        self.user?.name = textField.text
+        self.postItem?.name = textField.text
     }
     
-    @objc fileprivate func handleProfessionChange(textField: UITextField) {
-        self.user?.profession = textField.text
+    @objc fileprivate func handleDescriptionChange(textField: UITextField) {
+        self.postItem?.description = textField.text
     }
     
-    @objc fileprivate func handleAgeChange(textField: UITextField) {
-        self.user?.age = Int(textField.text ?? "")
+    @objc fileprivate func handlePriceChange(textField: UITextField) {
+        self.postItem?.price = Int(textField.text ?? "")
     }
     
     fileprivate func setupNavigationItems() {
-        navigationItem.title = "Settings"
+        navigationItem.title = "Post my item"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
+            UIBarButtonItem(title: "Update", style: .plain, target: self, action: #selector(handleSave)),
+            UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(handleDelete))
         ]
+    }
+    
+    @objc fileprivate func handleDelete() {
+        if let id = postItem?.uid {
+            Firestore.firestore().collection("items").document(id).delete()
+            print("delete it!")
+            self.delegate?.didEditItem()
+            dismiss(animated: true)
+        }
     }
     
     @objc fileprivate func handleSave() {
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        let itemUid = postItem?.uid
         let docData: [String: Any] = [
-            "uid": uid,
-            "fullName": user?.name ?? "",
-            "imageUrl1": user?.imageUrl1 ?? "",
-            "imageUrl2": user?.imageUrl2 ?? "",
-            "imageUrl3": user?.imageUrl3 ?? "",
-            "age": user?.age ?? -1,
-            "profession": user?.profession ?? "",
-            "minSeekingPrice": user?.minSeekingPrice ?? -1,
-            "maxSeekingPrice": user?.maxSeekingPrice ?? -1
+            "name": postItem?.name ?? "",
+            "description": postItem?.description ?? "",
+            "price": postItem?.price as Any,
+            "uid": itemUid as Any,
+            "ownerUid": user?.uid as Any,
+            "ownerName": user?.name ?? "",
+            
+            "imageUrl1": postItem?.imageUrl1 ?? "",
+            "imageUrl2": postItem?.imageUrl2 ?? "",
+            "imageUrl3": postItem?.imageUrl3 ?? "",
+            
         ]
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Saving settings"
         hud.show(in: view)
-        Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+        Firestore.firestore().collection("items").document(itemUid!).updateData(docData) { (err) in
             hud.dismiss()
             if let err = err {
                 print("Failed to save user settings:", err)
@@ -305,13 +271,15 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             print("Finished saving user info")
             self.dismiss(animated: true) {
                 print("Dismissal complete")
-                self.delegate?.didSaveSettings()
+                self.delegate?.didEditItem()
             }
+            
         }
-    }
+        }
     
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
     }
+
 
 }

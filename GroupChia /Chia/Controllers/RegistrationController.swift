@@ -14,6 +14,7 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
         registrationViewModel.bindableImage.value = image
+        registrationViewModel.checkFormValidity()
 //        registrationViewModel.image = image
 
         dismiss(animated: true, completion: nil)
@@ -23,8 +24,11 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     }
 }
 
+
 class RegistrationController: UIViewController {
     
+    
+    var delegate: LoginControllerDelegate?
     // UI Components
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -109,6 +113,11 @@ class RegistrationController: UIViewController {
                 return
             }
             print("Finished registering our user")
+            
+            self?.dismiss(animated: true, completion: {
+                self?.delegate?.didFinishLoggingIn()
+            })
+            
         }
         
     }
@@ -144,7 +153,7 @@ class RegistrationController: UIViewController {
 
             self.registerButton.isEnabled = isFormValid
             if isFormValid{
-                self.registerButton.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+                self.registerButton.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
                 self.registerButton.setTitleColor(.white, for: .normal)
             } else {
                 self.registerButton.backgroundColor = .lightGray
@@ -227,7 +236,24 @@ class RegistrationController: UIViewController {
         }
     }
     
+    let goToLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Go to Login", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc fileprivate func handleGoToLogin(){
+        let loginController = LoginController()
+        loginController.delegate = delegate
+        navigationController?.pushViewController(loginController, animated: true)
+        
+    }
+    
     fileprivate func setupLayout() {
+        navigationController?.isNavigationBarHidden = true
         view.addSubview(overallStackView)
         
         overallStackView.axis = .vertical
@@ -235,6 +261,9 @@ class RegistrationController: UIViewController {
         overallStackView.spacing = 8
         overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.addSubview(goToLoginButton)
+        goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
     
     let gradientLayer = CAGradientLayer()
@@ -246,7 +275,7 @@ class RegistrationController: UIViewController {
     fileprivate func setupGradientLayer() {
 
         let topColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
-        let bottomColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
 
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
