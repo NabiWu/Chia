@@ -10,6 +10,7 @@ import grpc
 import Firebase
 
 class MatchView: UIView {
+    weak var rootMatchesController: MatchesMessagesController?
     
     var currentUser: User!{
         didSet {
@@ -79,17 +80,19 @@ class MatchView: UIView {
         return imageView
     }()
     
-    fileprivate let sendMessageButton: UIButton = {
-        let button = SendMessageButton(type: .system)
-        button.setTitle("CONTINUE CHAT", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        return button
-    }()
+//    fileprivate let sendMessageButton: UIButton = {
+//        let button = SendMessageButton(type: .system)
+//        button.setTitle("CONTINUE CHAT", for: .normal)
+//        button.setTitleColor(.white, for: .normal)
+//        button.addTarget(self, action: #selector(handleChat), for: .touchUpInside)
+//        return button
+//    }()
     
     fileprivate let keepSwipingButton: UIButton = {
         let button = KeepSwipingButton(type: .system)
         button.setTitle("Keep Swiping", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(handleTapDismiss), for: .touchUpInside)
         return button
     }()
     
@@ -97,7 +100,6 @@ class MatchView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupBlurView()
-        
         setupLayout()
 //        setupAnimation()
     }
@@ -111,7 +113,7 @@ class MatchView: UIView {
         
         cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
         
-        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+//        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
         keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
         
         UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic) {
@@ -130,7 +132,7 @@ class MatchView: UIView {
         }
 
         UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-            self.sendMessageButton.transform = .identity
+//            self.sendMessageButton.transform = .identity
             self.keepSwipingButton.transform = .identity
         } completion: { _ in
         }
@@ -142,7 +144,7 @@ class MatchView: UIView {
         descriptionLabel,
         currentUserImageView,
         cardUserImageView,
-        sendMessageButton,
+//        sendMessageButton,
         self.keepSwipingButton,
     ]
     
@@ -169,9 +171,9 @@ class MatchView: UIView {
         cardUserImageView.layer.cornerRadius = imageWidth/2
         cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
+//        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
 
-        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: sendMessageButton.leadingAnchor, bottom: nil, trailing: sendMessageButton.trailingAnchor, padding: .init(top: 16, left: 0, bottom: 0, right: 0), size: .init(width: 0, height: 60))
+        keepSwipingButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 16, left: 40, bottom: 0, right: 40), size: .init(width: 0, height: 60))
         
         
         
@@ -203,6 +205,18 @@ class MatchView: UIView {
         }
         
         
+    }
+    
+    @objc fileprivate func handleChat(){
+        Firestore.firestore().collection("matches_messages").document(currentUser.uid!).collection("matches").document(cardUID).getDocument { (snapshot, err) in
+            if err != nil {
+                return
+            }
+            
+            // fetched our user here
+            guard let dictionary = snapshot?.data() else { return }
+            let match = Match(dictionary: dictionary)
+        }
     }
     
     required init?(coder: NSCoder) {

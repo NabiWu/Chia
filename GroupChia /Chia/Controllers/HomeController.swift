@@ -38,7 +38,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         fetchCurrentUser()
         fetchUsersFromFirestore()
-        fetchItemsFromFirestore()
+//        fetchItemsFromFirestore()
     }
     
     @objc fileprivate func handleMessage(){
@@ -105,7 +105,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     @objc fileprivate func handleRefresh(){
         cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
         fetchItemsFromFirestore()
-
     }
     
     var lastFetchedUser: User?
@@ -264,7 +263,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         let collection = Firestore.firestore().collection("matches_messages").document(uid).collection(cardOwnerID)
         
-        let messageData = ["text": "I am intereted in your item!", "fromId": uid, "toId": cardOwnerID, "timestamp": Timestamp(date: Date())] as [String : Any]
+        let messageData = ["text": "I am intereted in your \(postItem.name!)!", "fromId": uid, "toId": cardOwnerID, "timestamp": Timestamp(date: Date())] as [String : Any]
         
         collection.addDocument(data: messageData) { err in
             if let err = err {
@@ -286,7 +285,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
         
         
-        let recentMessageData = ["text": "I am intereted in your item!",
+        let recentMessageData = ["text": "I am intereted in your \(postItem.name!)!",
                                  "name": cardOwner?.name ?? "",
                                  "profileImageUrl": cardOwner?.imageUrl1 ?? "",
                                  "timestamp": Timestamp(date: Date()),
@@ -302,7 +301,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
         
 
-        let toData = ["text": "I am intereted in your item!",
+        let toData = ["text": "I am intereted in your \(postItem.name!)!",
                       "name": currentUser?.name ?? "",
                       "profileImageUrl": currentUser?.imageUrl1 ?? "",
                     "timestamp": Timestamp(date: Date()),
