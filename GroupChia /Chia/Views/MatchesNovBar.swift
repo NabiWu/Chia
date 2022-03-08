@@ -10,14 +10,14 @@ import LBTATools
 
 class MatchesNavBar: UIView {
     
-    let backButton = UIButton(image: UIImage(named: "app_icon")!, tintColor: .lightGray)
+    let backButton = UIButton(image: UIImage(named: "TopIcon")!, tintColor: .lightGray)
     
     override init(frame: CGRect){
         super.init(frame: frame)
         
         backgroundColor = .white
         
-        let iconImageView = UIImageView(image: UIImage(named: "top_messages_icon")?.withRenderingMode(.alwaysTemplate), contentMode: .scaleAspectFit)
+        let iconImageView = UIImageView(image: UIImage(systemName: "hare")!.withRenderingMode(.alwaysTemplate), contentMode: .scaleAspectFit)
         iconImageView.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         let messagesLable = UILabel(text: "Messages", font: .boldSystemFont(ofSize: 20), textColor: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1), textAlignment: .center)
         let feedLable = UILabel(text: "Feed", font: .boldSystemFont(ofSize: 20), textColor: .gray, textAlignment: .center)
