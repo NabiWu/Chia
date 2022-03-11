@@ -7,6 +7,9 @@
 
 import UIKit
 
+//SwipingPhotosController is the controller to deal with the multiple images in one cards.
+//Users can click left half of image to see the pervious image or click the right half to see the right
+//It is a PageViewController and override some methods inside to achieve the functionality
 class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var cardViewModel: CardViewModel! {
@@ -42,9 +45,6 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         view.addSubview(barStackView)
         
         let paddingTop:CGFloat = 8
-//        if !isCaedViewMode {
-//            paddingTop += UIApplication.shared.statusBarFrame.height
-//        }
         
         barStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: paddingTop, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
     }
@@ -87,6 +87,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
     }
     
+    // Handle when user tap the image. It will show the next or pervious images.
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         print("Cycle through photo")
         

@@ -6,7 +6,8 @@
 //
 
 import UIKit
-
+// A struct implemented CardViewModel
+// It will contain informations that user can see when they do the swiping.
 struct PostItem: ProducesCardViewModel {
     var name: String?
     var description: String?
@@ -33,7 +34,7 @@ struct PostItem: ProducesCardViewModel {
         self.imageUrl3 = dictionary["imageUrl3"] as? String
     }
     
-    
+
     func toCardViewModel() -> CardViewModel {
         let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
 

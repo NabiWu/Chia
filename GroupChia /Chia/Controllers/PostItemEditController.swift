@@ -12,6 +12,9 @@ import SDWebImage
 protocol PostItemEditControllerDelegate {
     func didEditItem()
 }
+// PostItemEditController will be shown when user click the cell of the PostItemCollectionViewController
+// User can update or delete the item that they have posted.
+// The UI and core logic of this Controller is similar to the PostitemController.
 
 class PostItemEditController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var delegate: PostItemEditControllerDelegate?
@@ -94,11 +97,11 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         tableView.keyboardDismissMode = .interactive
         loadCurrentItem()
         fetchCurrentUser()
-//        item = PostItem(dictionary: [:])
     }
     
     var user: User?
     var postItem : PostItem?
+    
     fileprivate func loadCurrentItem() {
         loadItemPhotos()
     }
@@ -113,7 +116,8 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
             self.tableView.reloadData()
         }
     }
-
+    
+    // Get photos of the item
     fileprivate func loadItemPhotos() {
         if let imageUrl = postItem?.imageUrl1, let url = URL(string: imageUrl) {
             SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
@@ -187,6 +191,7 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         return section == 0 ? 0 : 1
     }
     
+    // There are three section of the table and text of each textField should be consistent with the data in the firebase.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
@@ -230,6 +235,7 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         ]
     }
     
+    // It will be revoked when user want to delete the items.
     @objc fileprivate func handleDelete() {
         if let id = postItem?.uid {
             Firestore.firestore().collection("items").document(id).delete()
@@ -239,6 +245,7 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
         }
     }
     
+    // It will be revoked when user want to update the items.
     @objc fileprivate func handleSave() {
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -275,8 +282,9 @@ class PostItemEditController: UITableViewController, UIImagePickerControllerDele
             }
             
         }
-        }
+    }
     
+    // Navigate back to the PostItemCollectionViewController
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
     }

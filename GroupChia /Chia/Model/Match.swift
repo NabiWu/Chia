@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Data model that will be stored on the firebase
 struct Match {
     let name, profileImageUrl, uid: String
     

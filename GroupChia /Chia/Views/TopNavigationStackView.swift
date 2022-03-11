@@ -7,6 +7,8 @@
 
 import UIKit
 
+// A StackView contains two buttons shown on the top of the home screen
+// Users can navigate to other screen by clicking either of those buttons
 class TopNavigationStackView: UIStackView {
 
     let settingsButton = UIButton(type: .system)

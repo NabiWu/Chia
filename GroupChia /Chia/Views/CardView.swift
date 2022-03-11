@@ -8,25 +8,23 @@
 import UIKit
 import SDWebImage
 
+// Provide way of communication between CardView and HomeController
 protocol CardViewDelegate {
     func didTapMoreInfo(cardViewModel: CardViewModel)
     func didRemoveCard(cardView: CardView)
 }
 
+// The Card on the main screen. Users can tap to see more information, and swipe to like or dislike this items(Card). It is also a node in the linkedlist of CardViews.
 class CardView: UIView {
     
+    //next CardView
     var nextCardView: CardView?
     
     var delegate: CardViewDelegate?
     
+    //the viewModel inside the card. Until now, it are just about items that users posted.
     var cardViewModel: CardViewModel! {
         didSet {
-//           let imageName = cardViewModel.imageUrls.first ?? ""
-//            imageView.image = UIImage(named: imageName)
-//            if let url = URL(string: imageName){
-//                imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
-//            }
-            
             swipingPhotosController.cardViewModel = self.cardViewModel
             
             informationLabel.attributedText = cardViewModel.attributedString
@@ -44,13 +42,9 @@ class CardView: UIView {
         }
     }
     
+    // To record the image index
     fileprivate func setupImageIndexObserver(){
         cardViewModel.imageIndexObserver = {[weak self] (idx, imageUrl) in
-//            if let url = URL(string: imageUrl ?? "") {
-//                self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "photo_placeholder"), options: .continueInBackground)
-//            }
-          
-            
             self?.barsStackView.arrangedSubviews.forEach { (v) in
                 v.backgroundColor = self?.barDeselectedColor
             }
@@ -58,7 +52,6 @@ class CardView: UIView {
         }
     }
     
-//    fileprivate let imageView = UIImageView(image: UIImage(named: "lady5c"))
     fileprivate let swipingPhotosController = SwipingPhotosController(isCardViewMode: true)
     
     fileprivate let gradientLayer = CAGradientLayer()
@@ -81,8 +74,9 @@ class CardView: UIView {
 
     fileprivate let barDeselectedColor = UIColor(white: 0, alpha: 0.1)
     
+    // When click the image of the card, see the next image
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
-
+        print("See the next Photo")
         let tapLocation = gesture.location(in: nil)
         let shouldAdvanceNextPhoto = tapLocation.x > frame.width / 2 ? true : false
         if shouldAdvanceNextPhoto {
@@ -90,7 +84,6 @@ class CardView: UIView {
         } else {
             cardViewModel.goToPreviousPhoto()
         }
-        
     }
     
 
@@ -104,6 +97,7 @@ class CardView: UIView {
         gradientLayer.frame = self.frame
     }
     
+    // Get more information
     fileprivate let moreInfoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -112,6 +106,7 @@ class CardView: UIView {
         
     }()
     
+    // communicate to the homeController
     @objc fileprivate func handleMoreInfo() {
         delegate?.didTapMoreInfo(cardViewModel: self.cardViewModel)
     }
@@ -123,8 +118,6 @@ class CardView: UIView {
         let swipingPhotosView = swipingPhotosController.view!
         addSubview(swipingPhotosView)
         swipingPhotosView.fillSuperview()
-        
-//        setupBarsStackView()
         
         setupGradientLayer()
         
@@ -140,18 +133,16 @@ class CardView: UIView {
     
     fileprivate let barsStackView = UIStackView()
     
+    //setup a stackView to hold bars
     fileprivate func setupBarsStackView(){
         addSubview(barsStackView)
         barsStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
         
         barsStackView.spacing = 4
         barsStackView.distribution = .fillEqually
-        
-
-        
     }
     
-    
+    // handle when user pan the image on the card
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
         
         switch gesture.state {
@@ -169,6 +160,7 @@ class CardView: UIView {
         
     }
     
+    // make the cardViewModel rotate with the panGesture
     fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
         
         let translation = gesture.translation(in: nil)
@@ -180,6 +172,7 @@ class CardView: UIView {
         
     }
     
+    // know if the user like or dislike this item or they haven't make decision
     fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
         let translationDirection: CGFloat = gesture.translation(in: nil).x > 0 ? 1 : -1
         let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
@@ -198,29 +191,6 @@ class CardView: UIView {
                 self.transform = .identity
             }
         }
-        
-        
-        
-        
-        
-        
-//        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
-//            if shouldDismissCard {
-////                self.frame = CGRect(x: 600 * translationDirection, y: 0, width: self.frame.width, height: self.frame.height)
-//                self.center = CGPoint(x: 700 * translationDirection, y: 0)
-//
-//            } else {
-//                self.transform = .identity
-//            }
-//
-//        }) { (_) in
-//            self.transform = .identity
-//            if shouldDismissCard {
-//                self.removeFromSuperview()
-//                self.delegate?.didRemoveCard(cardView: self)
-//
-//            }
-//        }
     }
     
     required init?(coder: NSCoder) {
