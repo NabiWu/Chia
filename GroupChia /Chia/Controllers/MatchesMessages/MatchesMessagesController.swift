@@ -11,7 +11,7 @@ import Firebase
 // The RecentMessageCell is the view to represent the message cell in matcheMessage View
 class RecentMessageCell: LBTAListCell<RecentMessage> {
     
-    let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "jane1.jpg"), contentMode: .scaleAspectFill)
+    let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "top_left_profile"), contentMode: .scaleAspectFill)
     let usernameLabel = UILabel(text: "USERNAME HERE", font: .boldSystemFont(ofSize: 18))
     let messageTextLabel = UILabel(text: "Some long line of text that should span 2 lines", font: .systemFont(ofSize: 16), textColor: .gray, numberOfLines: 2)
     

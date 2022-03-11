@@ -10,7 +10,7 @@ import LBTATools
 // MessagesNavBar contains the navigation bar in realtime message view
 class MessagesNavBar: UIView {
     
-    let userProfileImageView = CircularImageView(width: 44, image: UIImage(named: "jane1"))
+    let userProfileImageView = CircularImageView(width: 44, image: UIImage(named: "top_left_profile"))
     let nameLabel = UILabel(text: "username", font: .systemFont(ofSize: 16))
     let backButton = UIButton(image: UIImage(named: "back")!, tintColor: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1))
     let flagButton = UIButton(image: UIImage(named: "flag")!, tintColor: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1))

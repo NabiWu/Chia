@@ -9,7 +9,7 @@ import UIKit
 //Photo inside the card
 class PhotoController: UIViewController {
     
-    let imageView = UIImageView(image: UIImage(named: "jane1"))
+    let imageView = UIImageView(image: UIImage(named: "top_left_profile"))
     
     
     init(imageUrl: String){
