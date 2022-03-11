@@ -9,18 +9,14 @@ import UIKit
 import grpc
 import Firebase
 
+// MatchView is the class controlling when user swipe to right.
 class MatchView: UIView {
     weak var rootMatchesController: MatchesMessagesController?
     
-    var currentUser: User!{
-        didSet {
-            
-        }
-    }
+    var currentUser: User!
     
     var cardUID: String! {
         didSet {
-            
             
             let query = Firestore.firestore().collection("users")
             query.document(cardUID).getDocument { snapshot, err in
@@ -80,13 +76,6 @@ class MatchView: UIView {
         return imageView
     }()
     
-//    fileprivate let sendMessageButton: UIButton = {
-//        let button = SendMessageButton(type: .system)
-//        button.setTitle("CONTINUE CHAT", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.addTarget(self, action: #selector(handleChat), for: .touchUpInside)
-//        return button
-//    }()
     
     fileprivate let keepSwipingButton: UIButton = {
         let button = KeepSwipingButton(type: .system)
@@ -101,9 +90,9 @@ class MatchView: UIView {
         super.init(frame: frame)
         setupBlurView()
         setupLayout()
-//        setupAnimation()
     }
     
+    // Setup animation when user like items
     fileprivate func setupAnimation(){
         views.forEach({$0.alpha = 1})
         
@@ -113,7 +102,6 @@ class MatchView: UIView {
         
         cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
         
-//        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
         keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
         
         UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic) {
@@ -132,7 +120,6 @@ class MatchView: UIView {
         }
 
         UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-//            self.sendMessageButton.transform = .identity
             self.keepSwipingButton.transform = .identity
         } completion: { _ in
         }
@@ -144,9 +131,9 @@ class MatchView: UIView {
         descriptionLabel,
         currentUserImageView,
         cardUserImageView,
-//        sendMessageButton,
         self.keepSwipingButton,
     ]
+    
     
     fileprivate func setupLayout(){
 
@@ -154,7 +141,6 @@ class MatchView: UIView {
             addSubview(v)
             v.alpha = 0
         }
-        
         
         let imageWidth: CGFloat = 140
         
@@ -171,18 +157,16 @@ class MatchView: UIView {
         cardUserImageView.layer.cornerRadius = imageWidth/2
         cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-//        sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 60))
 
         keepSwipingButton.anchor(top: currentUserImageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 16, left: 40, bottom: 0, right: 40), size: .init(width: 0, height: 60))
-        
-        
         
     }
     
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
+    
+    // make the background blur
     fileprivate func setupBlurView(){
-        
         
         visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
         
@@ -197,6 +181,7 @@ class MatchView: UIView {
         }
     }
     
+    // dismiss the matchView
     @objc fileprivate func handleTapDismiss(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut) {
             self.alpha = 0
@@ -205,18 +190,6 @@ class MatchView: UIView {
         }
         
         
-    }
-    
-    @objc fileprivate func handleChat(){
-        Firestore.firestore().collection("matches_messages").document(currentUser.uid!).collection("matches").document(cardUID).getDocument { (snapshot, err) in
-            if err != nil {
-                return
-            }
-            
-            // fetched our user here
-            guard let dictionary = snapshot?.data() else { return }
-            let match = Match(dictionary: dictionary)
-        }
     }
     
     required init?(coder: NSCoder) {

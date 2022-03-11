@@ -34,7 +34,6 @@ class CardViewModel {
     fileprivate var imageIndex = 0 {
         didSet{
             let imageUrl = imageUrls[imageIndex]
-//            let image = UIImage(named: imageNmae)
             imageIndexObserver?(imageIndex, imageUrl)
         }
     }
@@ -42,10 +41,12 @@ class CardViewModel {
     // reactive programming
     var imageIndexObserver: ((Int, String?) -> ())?
     
+    // change the imageIndex by 1
     func advanceToNextPhoto(){
         imageIndex = min( imageIndex + 1, imageUrls.count - 1)
     }
     
+    // change the imageIndex by -1
     func goToPreviousPhoto(){
         imageIndex = max(0, imageIndex - 1)
     }

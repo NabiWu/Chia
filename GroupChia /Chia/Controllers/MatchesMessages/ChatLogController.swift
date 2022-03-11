@@ -11,13 +11,12 @@ import UIKit
 
 
 
-
+// ChatLogContrller controls the messages sending and receiving from/to firestore
 class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionViewDelegateFlowLayout {
 
     deinit{
         print("ChatlogController is destroying itself properly, no retain cycles or any other memory issues")
     }
-    
     
     fileprivate let match: Match
     fileprivate lazy var customNavBar = MessagesNavBar(match: match)
@@ -36,13 +35,12 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
     
     @objc fileprivate func handleSend() {
         print(customInputView.textView.text ?? "")
-        
         saveToFromMessages()
         saveToFromRecentMessage()
-        
-        
     }
     
+    
+    // catch text from textView and save to recentmessages
     fileprivate func saveToFromRecentMessage(){
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         
@@ -72,13 +70,12 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
         
         Firestore.firestore().collection("matches_messages").document(match.uid).collection("recent_messages").document(currentUserId).setData(toData)
         
-        
-        
     }
     
+    
+    // catch text from textView and save to the message collections
     fileprivate func saveToFromMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
-//        TODO: add item collection and item uid
         let collection = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid)
         
         let data = ["text": customInputView.textView.text ?? "", "fromId": currentUserId, "toId": match.uid, "timestamp": Timestamp(date: Date())] as [String : Any]
@@ -118,11 +115,12 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
     
     var listener: ListenerRegistration?
     
+    // Fetch all messages
     fileprivate func fetchMessages(){
         print("fetch messages")
         
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
-//      TODO
+
         let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid).order(by: "timestamp")
         
         listener = query.addSnapshotListener { querySnapshot, err in
@@ -154,6 +152,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
     
     var currentUser: User?
     
+    // fetch for current user
     fileprivate func fetchCurrentUser(){
         Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "").getDocument { snapshot, err in
             let data = snapshot?.data() ?? [:]
@@ -192,6 +191,7 @@ class ChatLogController: LBTAListController<MessageCell,Message>, UICollectionVi
         view.addSubview(statusBarCover)
         statusBarCover.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
     }
+    
     
     
     @objc fileprivate func handleBack(){

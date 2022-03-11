@@ -7,11 +7,11 @@
 
 import UIKit
 
+// the user object contains users' main information
 struct User: ProducesCardViewModel{
     var name: String?
     var age: Int?
     var profession: String?
-//    let imageNames: [String]
     var imageUrl1: String?
     var imageUrl2: String?
     var imageUrl3: String?
@@ -35,6 +35,7 @@ struct User: ProducesCardViewModel{
         self.bio = dictionary["bio"] as? String ?? ""
     }
     
+    // change the Model to ViewModel
     func toCardViewModel() -> CardViewModel {
         let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
         

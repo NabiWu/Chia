@@ -7,6 +7,7 @@
 
 import Firebase
 
+// the message object contains all need information
 struct Message{
     let text, fromId, toId: String
     let timestamp: Timestamp

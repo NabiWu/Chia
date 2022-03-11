@@ -8,6 +8,8 @@
 import UIKit
 import LBTATools
 
+
+// MatchesNavBar setup the ui for messageView
 class MatchesNavBar: UIView {
     
     let backButton = UIButton(image: UIImage(named: "TopIcon")!, tintColor: .lightGray)

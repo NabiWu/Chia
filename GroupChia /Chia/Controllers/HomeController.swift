@@ -9,13 +9,13 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+// this is the controller for the main page
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate, PostItemControllerDelegate{
     
-
+    // setup all needed local varirbales
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
-    
     var cardViewModels = [CardViewModel]()
 
     
@@ -36,9 +36,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         fetchCurrentUser()
         fetchUsersFromFirestore()
-//        fetchItemsFromFirestore()
+        cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
+        fetchItemsFromFirestore()
     }
     
+    // handle the message button function by popping up the message view
     @objc fileprivate func handleMessage(){
         let vc = MatchesMessagesController()
         navigationController?.pushViewController(vc, animated: true)
@@ -59,6 +61,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
  
     }
     
+    // after login in, fetch the current user
     func didFinishLoggingIn() {
         fetchCurrentUser()
     }
@@ -66,6 +69,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     fileprivate let hud = JGProgressHUD(style: .dark)
     fileprivate var user: User?
     
+    // fetch curren user for further accessing informations such as uid, max/min seeking price, etc
     fileprivate func fetchCurrentUser(){
         hud.textLabel.text = "Loading"
         hud.show(in: view)
@@ -85,6 +89,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     var swipes = [String: Int]()
     
+    // fetch the swipe information to get to know whether user like or dislike certain items
     fileprivate func fetchSwipes() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         Firestore.firestore().collection("swipes").document(uid).getDocument { snapchot, err  in
@@ -100,6 +105,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
+    // handle refresh by refetching items from database
     @objc fileprivate func handleRefresh(){
         cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
         fetchItemsFromFirestore()
@@ -109,7 +115,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     
 
-    
+    // fetch all items from firestore based on the max/min seeking prices
     fileprivate func fetchItemsFromFirestore() {
         
         let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
@@ -140,7 +146,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 self.items[item.uid ?? ""] = item
             
                 let isNotCurrentUser =  item.ownerUid != Auth.auth().currentUser?.uid
-//                let hasSwipedBefore = self.swipes[user.uid!] == nil
                 
                 let hasSwipedBefore = true
                 
@@ -158,14 +163,16 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     var items = [String: PostItem]()
-    
     var topCardView: CardView?
+    
+    // handlelike function will update the swipe collection in firebase and show the animation view
     @objc func handleLike() {
         saveSwipeToFirestore(didLike: 1)
         performSwipeAnimation(translation: 700, angle: 15)
     
     }
     
+    // save the decision of the user for certain item into the firestore
     fileprivate func saveSwipeToFirestore(didLike: Int) {
         
         guard let uid = Auth.auth().currentUser?.uid else {return}
@@ -211,6 +218,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     var users = [String: User]()
+    
+    // fetch all users from firestore and put it into a dictionary
     fileprivate func fetchUsersFromFirestore() {
 
         let query = Firestore.firestore().collection("users")
@@ -229,7 +238,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
-    // TO DO: Go to private message
+    // checkifmatch exists and sent messages from current user to item owner and update the massage collection for both user as well as the recent messages
     fileprivate func checkIfMatchExists(cardUID: String, cardOwnerID: String, cardOwnerImage: String){
         print("Detecting match")
         
@@ -311,16 +320,17 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     
-    
+    // handle post item button callback function
     @objc func handlePostItem() {
         let postItemController = PostItemController()
         postItemController.delegate = self
         let navController = UINavigationController(rootViewController: postItemController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
-//        addItem()
+
     }
     
+    // handel manage post item call back function
     @objc func handleManagePostItem() {
         let layout = UICollectionViewFlowLayout()
         let postItemCollectionViewController = PostItemCollectionViewController(collectionViewLayout: layout)
@@ -332,6 +342,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         fetchCurrentUser()
     }
     
+    // add the new posted item to firestore
     func addItem() {
         Firestore.firestore().collection("items").document(UUID().uuidString).setData([
             "description":"",
@@ -347,6 +358,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
+    // show the matched animation
     fileprivate func presesntMatchView(cardUID: String){
         let matchView = MatchView()
         matchView.cardUID = cardUID
@@ -355,11 +367,13 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         matchView.fillSuperview()
     }
     
+    // handle dislike by removing the topmost card
     @objc func handleDislike(){
         saveSwipeToFirestore(didLike: 0)
         performSwipeAnimation(translation: -700, angle: -15)
     }
     
+    // showing the swipe animatin with rotation and translation with certain threshold
     fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
         let duration = 0.3
         let translationAnimation = CABasicAnimation(keyPath: "position.x")
@@ -386,12 +400,13 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         CATransaction.commit()
     }
     
+    // remove the topmost card from the cardview
     func didRemoveCard(cardView: CardView) {
         self.topCardView?.removeFromSuperview()
         self.topCardView = self.topCardView?.nextCardView
     }
     
-    
+    // change the post item into cardView to display
     fileprivate func setupItemsFromUser(item: PostItem) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
@@ -402,6 +417,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         return cardView
     }
     
+    // handle the more info button for displaying detailed information of the items
     func didTapMoreInfo(cardViewModel:CardViewModel) {
         print("Home controller:",cardViewModel.attributedString)
         let userDetailsController = UserDetailsController()
@@ -410,8 +426,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         present(userDetailsController, animated: true)
     }
     
+    // handle the setting button by showing the setting controller
     @objc func handleSettings(){
-        
         let settingsController = SettingsController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)

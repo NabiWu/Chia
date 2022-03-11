@@ -8,11 +8,7 @@
 import LBTATools
 import Firebase
 
-
-
-import LBTATools
-import Firebase
-
+// The RecentMessageCell is the view to represent the message cell in matcheMessage View
 class RecentMessageCell: LBTAListCell<RecentMessage> {
     
     let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "jane1.jpg"), contentMode: .scaleAspectFill)
@@ -42,6 +38,7 @@ class RecentMessageCell: LBTAListCell<RecentMessage> {
     }
 }
 
+// The object represent the recent messages for certain transaction
 struct RecentMessage {
     let text, uid, name, profileImageUrl: String
     let timestamp: Timestamp
@@ -56,6 +53,7 @@ struct RecentMessage {
     }
 }
 
+// The MatchesMeesageController controls the message view
 class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, RecentMessage, MatchesHeader>, UICollectionViewDelegateFlowLayout {
     
     var recentMessagesDictionary = [String: RecentMessage]()
@@ -74,6 +72,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         print("Reclaiming memory from the matchesMessagesControllers")
     }
     
+    // based on current user id, fetch all the related recent messages
     fileprivate func fetchRecentMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
         
@@ -147,6 +146,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         setupUI()
     }
     
+    // set up ui components for message match view
     fileprivate func setupUI() {
         collectionView.backgroundColor = .white
         

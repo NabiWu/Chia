@@ -7,7 +7,7 @@
 
 import LBTATools
 
-
+// MessagesNavBar contains the navigation bar in realtime message view
 class MessagesNavBar: UIView {
     
     let userProfileImageView = CircularImageView(width: 44, image: UIImage(named: "jane1"))
@@ -28,7 +28,6 @@ class MessagesNavBar: UIView {
         
         setupShadow(opacity: 0.2, radius: 8, offset: .init(width: 0, height: 10), color: .init(white: 0, alpha: 0.3))
 
-        
         let middleStack = hstack(
             stack(
                 userProfileImageView,

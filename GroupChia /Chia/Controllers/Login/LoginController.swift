@@ -8,10 +8,12 @@
 import UIKit
 import JGProgressHUD
 
+// setup protocol
 protocol LoginControllerDelegate {
     func didFinishLoggingIn()
 }
 
+// loginController responsible for controlling the login process
 class LoginController: UIViewController {
     
     var delegate: LoginControllerDelegate?
@@ -44,6 +46,7 @@ class LoginController: UIViewController {
         return sv
     }()
     
+    // catch the corresponding information from textView
     @objc fileprivate func handleTextChange(textField: UITextField) {
         if textField == emailTextField {
             loginViewModel.email = textField.text
@@ -66,6 +69,7 @@ class LoginController: UIViewController {
         return button
     }()
     
+    // setup the selector function for user to login
     @objc fileprivate func handleLogin() {
         loginViewModel.performLogin { (err) in
             self.loginHUD.dismiss()
@@ -81,6 +85,7 @@ class LoginController: UIViewController {
         }
     }
     
+    
     fileprivate let backToRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Go back", for: .normal)
@@ -90,18 +95,15 @@ class LoginController: UIViewController {
         return button
     }()
     
+    // setup the back button
     @objc fileprivate func handleBack() {
         navigationController?.popViewController(animated: true)
-//        let registrationController = RegistrationController()
-//        navigationController?.pushViewController(registrationController, animated: true)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupGradientLayer()
         setupLayout()
-        
         setupBindables()
     }
     
@@ -132,6 +134,7 @@ class LoginController: UIViewController {
         gradientLayer.frame = view.bounds
     }
     
+    // setup the gradient layer for login page
     fileprivate func setupGradientLayer() {
         let topColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
         let bottomColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)

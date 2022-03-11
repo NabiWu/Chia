@@ -8,6 +8,9 @@
 import LBTATools
 import Firebase
 
+
+// The MatchesHorizontalController will display the liked item in the matchmessage view
+// This functionality is not complete, will be implemented in the future
 class MatchesHorizontalController: LBTAListController<MatchCell, Match>, UICollectionViewDelegateFlowLayout {
     
     weak var rootMatchesController: MatchesMessagesController?
@@ -35,6 +38,7 @@ class MatchesHorizontalController: LBTAListController<MatchCell, Match>, UIColle
         fetchMatches()
     }
     
+    // fetches the liked items
     fileprivate func fetchMatches() {
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("matches_messages").document(currentUserId).collection("matches").getDocuments { (querySnapshot, err) in

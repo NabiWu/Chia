@@ -7,6 +7,7 @@
 
 import LBTATools
 
+// CustomInputAccessoryView is the class show how the input textview looks like
 class CustomInputAccessoryView: UIView {
     
     let textView = UITextView()
@@ -25,7 +26,6 @@ class CustomInputAccessoryView: UIView {
         setupShadow(opacity: 0.1, radius: 8, offset: .init(width: 0, height: -8), color: .lightGray)
         autoresizingMask = .flexibleHeight
         
-//            textView.text = ""
         textView.isScrollEnabled = false
         textView.font = .systemFont(ofSize: 16)
         

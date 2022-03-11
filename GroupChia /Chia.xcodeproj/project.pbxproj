@@ -23,7 +23,6 @@
 		252431AA27C539070025EAB9 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431A927C539070025EAB9 /* SettingsController.swift */; };
 		252431AC27C54D140025EAB9 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252431AB27C54D140025EAB9 /* SettingsCell.swift */; };
 		2566D21A27C89F4100BC2C2B /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21927C89F4100BC2C2B /* MatchView.swift */; };
-		2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */; };
 		2566D21E27C93DDB00BC2C2B /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */; };
 		2587448F27C5961000FCDDC4 /* PriceRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */; };
 		2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */; };
@@ -73,7 +72,6 @@
 		252431A927C539070025EAB9 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		252431AB27C54D140025EAB9 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		2566D21927C89F4100BC2C2B /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
-		2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRangeCell.swift; sourceTree = "<group>"; };
 		2587449027C5C2E500FCDDC4 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
@@ -217,7 +215,6 @@
 				252431AB27C54D140025EAB9 /* SettingsCell.swift */,
 				2587448E27C5961000FCDDC4 /* PriceRangeCell.swift */,
 				2566D21927C89F4100BC2C2B /* MatchView.swift */,
-				2566D21B27C939FB00BC2C2B /* SendMessageButton.swift */,
 				2566D21D27C93DDB00BC2C2B /* KeepSwipingButton.swift */,
 				252085C627C9DB610041359D /* MatchesNovBar.swift */,
 			);
@@ -418,7 +415,6 @@
 				25C34A9527C7DE1E00DE63CF /* PhotoController.swift in Sources */,
 				2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */,
 				25EB905727C1DA1D005E9408 /* Advertiser.swift in Sources */,
-				2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
 				4B28FFD427D03CB400E79465 /* PostItemEditController.swift in Sources */,

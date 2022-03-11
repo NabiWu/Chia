@@ -7,6 +7,7 @@
 
 import LBTATools
 
+
 class MatchCell: LBTAListCell<Match> {
     
     let profileImageView = UIImageView(image: #imageLiteral(resourceName: "kelly1"), contentMode: .scaleAspectFill)
