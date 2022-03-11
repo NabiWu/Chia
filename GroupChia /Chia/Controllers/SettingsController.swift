@@ -15,11 +15,10 @@ protocol SettingsControllerDelegate {
 }
 
 class CustomImagePickerController: UIImagePickerController {
-    
     var imageButton: UIButton?
-    
 }
 
+// SettingsController allow user to setup their user profile and pick the price range of items that they want to browse.
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     deinit{
@@ -33,6 +32,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
     
+    // Handle When user click the the imagebutton
     @objc func handleSelectPhoto(button: UIButton) {
         print("Select photo with button:", button)
         let imagePicker = CustomImagePickerController()
@@ -41,6 +41,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         present(imagePicker, animated: true)
     }
     
+    // select images from the storage and upload to the firebase.
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedImage = info[.originalImage] as? UIImage
         // how do i set the image on my buttons when I select a photo?
@@ -110,7 +111,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     var user: User?
     
-    
+    // get information of currentUser
     fileprivate func fetchCurrentUser() {
         Firestore.firestore().fetchCurrentUser { (user, err) in
             if let err = err {
@@ -209,7 +210,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         evaluateMinMax()
     }
     
-    
+    // convert sliders value to the texts
     fileprivate func evaluateMinMax() {
         guard let priceRangeCell = tableView.cellForRow(at: [5, 0]) as? PriceRangeCell else { return }
         let minValue = Int(priceRangeCell.minSlider.value)
@@ -226,6 +227,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     static let defaultMinSeekingPrice = 1
     static let defaultMaxSeekingPrice = 100
     
+    // There are five sections in the table and the last section contains two sliders to let user change the price range.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 5 {
             let priceRangeCell = PriceRangeCell(style: .default, reuseIdentifier: nil)
@@ -288,11 +290,13 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         ]
     }
     
+    // logout and navigate to the registeration page
     @objc fileprivate func handleLogout(){
         try? Auth.auth().signOut()
         dismiss(animated: true) 
     }
     
+    // Update this user to the firebase
     @objc fileprivate func handleSave() {
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -326,6 +330,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         }
     }
     
+    // handle cancel and navigate to the homeController page
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
     }

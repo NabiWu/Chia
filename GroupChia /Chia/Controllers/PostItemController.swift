@@ -9,10 +9,13 @@ import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
+// This delegate provide the connection between PostItemController and HomeController
 protocol PostItemControllerDelegate {
     func didSaveItems()
 }
 
+// PostItemController will be shown when User click the middle button in the bottom stackView.
+// They are allowed to select photes and type in the price etc.
 class PostItemController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var delegate: PostItemControllerDelegate?
 
@@ -21,7 +24,8 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
-
+    
+    // When user want to select a photo
     @objc func handleSelectPhoto(button: UIButton) {
         print("Select photo with button:", button)
         let imagePicker = CustomImagePickerController()
@@ -30,6 +34,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         present(imagePicker, animated: true)
     }
     
+    // try to upload the selected Images
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedImage = info[.originalImage] as? UIImage
         // how do i set the image on my buttons when I select a photo?
@@ -111,7 +116,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
             self.tableView.reloadData()
         }
     }
-    
+    // UIView contains three button allow user to upload photos
     lazy var header: UIView = {
         let header = UIView()
         header.addSubview(image1Button)
@@ -135,6 +140,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         }
     }
     
+    // The table itself has three sections
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return header
@@ -167,45 +173,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         return section == 0 ? 0 : 1
     }
     
-//    @objc fileprivate func handleMinPriceChange(slider: UISlider){
-//
-//        evaluateMinMax()
-//    }
-//
-//    @objc fileprivate func handleMaxPriceChange(slider: UISlider){
-//        evaluateMinMax()
-//    }
-//
-//
-//    fileprivate func evaluateMinMax() {
-//        guard let priceRangeCell = tableView.cellForRow(at: [3, 0]) as? PriceRangeCell else { return }
-//        let minValue = Int(priceRangeCell.minSlider.value)
-//        var maxValue = Int(priceRangeCell.maxSlider.value)
-//        maxValue = max(minValue, maxValue)
-//        priceRangeCell.maxSlider.value = Float(maxValue)
-//        priceRangeCell.minLabel.text = "Min \(minValue)"
-//        priceRangeCell.maxLabel.text = "Max \(maxValue)"
-//
-//        user?.minSeekingPrice = minValue
-//        user?.maxSeekingPrice = maxValue
-//    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.section == 3 {
-//            let priceRangeCell = PriceRangeCell(style: .default, reuseIdentifier: nil)
-//            priceRangeCell.minSlider.addTarget(self, action: #selector(handleMinPriceChange), for: .valueChanged)
-//            priceRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxPriceChange), for: .valueChanged)
-//
-//            let minPrice = user?.minSeekingPrice ?? SettingsController.defaultMinSeekingPrice
-//            let maxPrice = user?.maxSeekingPrice ?? SettingsController.defaultMaxSeekingPrice
-//
-//            priceRangeCell.minLabel.text = "Min \(minPrice)"
-//            priceRangeCell.maxLabel.text = "Max \(maxPrice)"
-//            priceRangeCell.minSlider.value = Float(minPrice)
-//            priceRangeCell.maxSlider.value = Float(maxPrice)
-//            return priceRangeCell
-//        }
-        
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
         switch indexPath.section {
@@ -219,7 +187,6 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
             cell.textField.placeholder = "Enter Price"
             cell.textField.addTarget(self, action: #selector(handlePriceChange), for: .editingChanged)
         }
-        
         return cell
     }
     
@@ -235,6 +202,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         self.item?.price = Int(textField.text ?? "")
     }
     
+    // The navigationItems contains cancel to dismiss or save to save this item
     fileprivate func setupNavigationItems() {
         navigationItem.title = "Post my item"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -244,6 +212,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         ]
     }
     
+    // Save this item to the firebase.
     @objc fileprivate func handleSave() {
         print("Saving our settings data into Firestore")
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -282,6 +251,7 @@ class PostItemController: UITableViewController, UIImagePickerControllerDelegate
         
     }
     
+    // dismiss this controller and navigate to the homecontroller
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
     }

@@ -7,13 +7,8 @@
 
 import UIKit
 
-//struct Post {
-//    let imageUrl: String
-//    init(dictionary: [String: Any]) {
-//        self.imageUrl = dictionary["imageUrl"] as? String ?? ""
-//    }
-//}
-
+// UserProfilePhotoCell is the cell in the PostitemCollectionViewController.
+// Each cell contains the image of this item.
 class UserProfilePhotoCell: UICollectionViewCell {
     
     var postItem: PostItem? {
@@ -28,11 +23,11 @@ class UserProfilePhotoCell: UICollectionViewCell {
                     print("Failed to fetch post image:", err)
                     return
                 }
-//              TODO: change place holder
                 guard let imageData = data else { return }
                 
                 let photoImage = UIImage(data: imageData)
                 
+                // async load the image
                 DispatchQueue.main.async {
                     self.photoImageView.sd_setImage(with: URL(string: imageUrl))
                 }

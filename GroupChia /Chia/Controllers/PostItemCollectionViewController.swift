@@ -9,16 +9,13 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-
+//PostItemCollectionViewController is a CollectionView shown all items that user posted
 class PostItemCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PostItemEditControllerDelegate {
     let cellId = "cellId"
     var postItems = [PostItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
         print("collectionView did load")
@@ -27,22 +24,19 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
         collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         fetchMyPostItems()
-
     }
     
     fileprivate func setupNavigationItems() {
         navigationItem.title = "Edit my items"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBack))
-//        navigationItem.rightBarButtonItems = [
-//            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-//            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-//        ]
     }
     
     @objc fileprivate func handleBack() {
         dismiss(animated: true)
     }
+    
+    // Get PostItems of this user from the firebase.
     fileprivate func fetchMyPostItems() {
         let query = Firestore.firestore().collection("items")
         let hud = JGProgressHUD(style: .dark)
@@ -87,6 +81,7 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
         
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
@@ -111,7 +106,6 @@ class PostItemCollectionViewController: UICollectionViewController, UICollection
     }
     
     func didEditItem() {
-//      TODO: optimize don't need to refetch
         fetchMyPostItems()
     }
 }

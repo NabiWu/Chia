@@ -7,6 +7,7 @@
 
 import UIKit
 
+// A StackView contains five buttons shown on the bottom of the home screen
 class HomeBottomControlsStackView: UIStackView {
     
     static func createButton(image: UIImage) -> UIButton {
