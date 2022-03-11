@@ -12,15 +12,13 @@ import JGProgressHUD
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate, PostItemControllerDelegate{
     
 
-    
-
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
     
-    
     var cardViewModels = [CardViewModel]()
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -326,7 +324,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     @objc func handleManagePostItem() {
         let layout = UICollectionViewFlowLayout()
         let postItemCollectionViewController = PostItemCollectionViewController(collectionViewLayout: layout)
-//        postItemCollectionViewController.delegate = self
         let navController = UINavigationController(rootViewController: postItemCollectionViewController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
@@ -394,21 +391,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         self.topCardView = self.topCardView?.nextCardView
     }
     
-    //TODO: fetch my items
-    
-    //TODO: edit my items
-    
-    //TODO: delete my items
-    
-//    fileprivate func setupCardFromUser(user: User) -> CardView {
-//        let cardView = CardView(frame: .zero)
-//        cardView.delegate = self
-//        cardView.cardViewModel = user.toCardViewModel()
-//        cardsDeckView.addSubview(cardView)
-//        cardsDeckView.sendSubviewToBack(cardView)
-//        cardView.fillSuperview()
-//        return cardView
-//    }
     
     fileprivate func setupItemsFromUser(item: PostItem) -> CardView {
         let cardView = CardView(frame: .zero)
