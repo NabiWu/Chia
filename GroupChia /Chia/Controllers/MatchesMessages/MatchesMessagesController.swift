@@ -121,7 +121,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
     }
     
     override func setupHeader(_ header: MatchesHeader) {
-        header.matchesHorizontalController.rootMatchesController = self
+//        header.matchesHorizontalController.rootMatchesController = self
     }
     
     func didSelectMatchFromHeader(match: Match) {
@@ -155,7 +155,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         view.addSubview(customNavBar)
         customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: 150))
         
-        collectionView.contentInset.top = 150
+        collectionView.contentInset.top = -100
         collectionView.verticalScrollIndicatorInsets.top = 150
         
         let statusBarCover = UIView(backgroundColor: .white)

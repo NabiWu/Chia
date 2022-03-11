@@ -121,7 +121,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         hud.textLabel.text = "Fetching Items"
         hud.show(in: view)
 
-        let query = Firestore.firestore().collection("items").whereField("price", isGreaterThanOrEqualTo: minPrice).whereField("price", isLessThanOrEqualTo: maxPrice).limit(to: 10)
+        let query = Firestore.firestore().collection("items").whereField("price", isGreaterThanOrEqualTo: minPrice).whereField("price", isLessThanOrEqualTo: maxPrice)
         
         topCardView = nil
         

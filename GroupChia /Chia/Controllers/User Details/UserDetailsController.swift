@@ -50,23 +50,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return button
     }()
     
-    lazy var dislikeButton = self.createButton(image: UIImage(named: "dismiss_circle")!, selector: #selector(handleDislike))
-    
-    @objc fileprivate func handleDislike(){
-        print("dislike")
-    }
-    
-    lazy var superLikeButton = self.createButton(image: UIImage(named: "super_like_circle")!, selector: #selector(handleSuperlike))
-    
-    @objc fileprivate func handleSuperlike(){
-        
-    }
-    
-    lazy var likeButton = self.createButton(image: UIImage(named: "like_circle")!, selector: #selector(handleLike))
-    
-    @objc fileprivate func handleLike(){
-        
-    }
     
     
     
@@ -86,17 +69,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = .white
         setupLayout()
         setupVisualBlurEffectView()
-        setupBottomControls()
     }
     
-    fileprivate func setupBottomControls(){
-        let stackView = UIStackView(arrangedSubviews: [dislikeButton, superLikeButton, likeButton])
-        stackView.distribution = .fillEqually
-        stackView.spacing = -32
-        view.addSubview(stackView)
-        stackView.anchor(top: nil, leading: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 300, height: 80))
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    }
+
     
     fileprivate func setupVisualBlurEffectView(){
         let blurEffect = UIBlurEffect(style: .regular)
