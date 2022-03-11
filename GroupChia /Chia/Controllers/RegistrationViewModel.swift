@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 
+// the registrationViewModel responsible for contacting with firebase to save user profile image and adding new user to our database
 class RegistrationViewModel {
     
     var bindableIsRegistering = Bindable<Bool>()
@@ -30,6 +31,7 @@ class RegistrationViewModel {
         }
     }
     
+    // perform regsitration by using Auth to create new users
     func performRegistration(completion: @escaping (Error?) -> ()){
         guard let email = email else {
             return
@@ -49,20 +51,9 @@ class RegistrationViewModel {
             self.saveImageToFirebase(completion: completion)
         
         }
-        
-//        Firestore.firestore().collection("cities").document("LA").setData([
-//            "name": "Los Angeles",
-//            "state": "CA",
-//            "country": "USA"
-//        ]) { err in
-//            if let err = err {
-//                print("Error writing document: \(err)")
-//            } else {
-//                print("Document successfully written!")
-//            }
-//        }
     }
     
+    // catch the uploaded user image and store it into firebase store
     fileprivate func saveImageToFirebase(completion: @escaping (Error?) ->()){
         let filename = UUID().uuidString
         let ref = Storage.storage().reference(withPath: "/images/\(filename)")
@@ -88,6 +79,7 @@ class RegistrationViewModel {
         }
     }
     
+    // save the corresponding information to firestore including uid age and max/min seeking prices
     fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()){
         let uid = Auth.auth().currentUser?.uid ?? ""
         let docData: [String: Any] = [
@@ -112,7 +104,4 @@ class RegistrationViewModel {
         bindableIsFormValid.value = isFormValid
         
     }
-
-    
-//    var isFormValidObserver: ((Bool) -> ())?
 }

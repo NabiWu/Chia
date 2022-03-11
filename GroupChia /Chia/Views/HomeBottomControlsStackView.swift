@@ -7,6 +7,7 @@
 
 import UIKit
 
+// A StackView contains five buttons shown on the bottom of the home screen
 class HomeBottomControlsStackView: UIStackView {
     
     static func createButton(image: UIImage) -> UIButton {
@@ -16,11 +17,11 @@ class HomeBottomControlsStackView: UIStackView {
         return button
     }
     
-    let refreshButton = createButton(image: UIImage(named: "refresh_circle")!)
-    let dislikeButton = createButton(image: UIImage(named: "dismiss_circle")!)
+    let refreshButton = createButton(image: UIImage(systemName: "arrow.clockwise")!)
+    let dislikeButton = createButton(image: UIImage(systemName: "x.circle")!)
     let postButton = createButton(image: UIImage(systemName: "square.and.arrow.up")!)
-    let likeButton = createButton(image: UIImage(named: "like_circle")!)
-    let specialButton = createButton(image: UIImage(named: "boost_circle")!)
+    let likeButton = createButton(image: UIImage(systemName: "hand.thumbsup")!)
+    let specialButton = createButton(image: UIImage(systemName: "list.star")!)
 
     override init(frame: CGRect) {
         super.init(frame: frame)

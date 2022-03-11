@@ -7,6 +7,7 @@
 
 import LBTATools
 
+// MessageCell cutomized the how the message looks like while chatting
 class MessageCell: LBTAListCell<Message> {
     
     let textView : UITextView = {
@@ -40,6 +41,7 @@ class MessageCell: LBTAListCell<Message> {
     
     var anchoredContraints: AnchoredConstraints!
     
+    // set up how the message buble looks like
     override func setupViews() {
         super.setupViews()
         
@@ -50,7 +52,6 @@ class MessageCell: LBTAListCell<Message> {
         anchoredContraints.leading?.constant = 20
         anchoredContraints.trailing?.isActive = false
         anchoredContraints.trailing?.constant = -20
-        
         
         bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
         

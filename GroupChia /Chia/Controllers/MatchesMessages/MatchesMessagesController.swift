@@ -8,14 +8,10 @@
 import LBTATools
 import Firebase
 
-
-
-import LBTATools
-import Firebase
-
+// The RecentMessageCell is the view to represent the message cell in matcheMessage View
 class RecentMessageCell: LBTAListCell<RecentMessage> {
     
-    let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "jane1.jpg"), contentMode: .scaleAspectFill)
+    let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "top_left_profile"), contentMode: .scaleAspectFill)
     let usernameLabel = UILabel(text: "USERNAME HERE", font: .boldSystemFont(ofSize: 18))
     let messageTextLabel = UILabel(text: "Some long line of text that should span 2 lines", font: .systemFont(ofSize: 16), textColor: .gray, numberOfLines: 2)
     
@@ -42,6 +38,7 @@ class RecentMessageCell: LBTAListCell<RecentMessage> {
     }
 }
 
+// The object represent the recent messages for certain transaction
 struct RecentMessage {
     let text, uid, name, profileImageUrl: String
     let timestamp: Timestamp
@@ -56,6 +53,7 @@ struct RecentMessage {
     }
 }
 
+// The MatchesMeesageController controls the message view
 class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, RecentMessage, MatchesHeader>, UICollectionViewDelegateFlowLayout {
     
     var recentMessagesDictionary = [String: RecentMessage]()
@@ -74,6 +72,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         print("Reclaiming memory from the matchesMessagesControllers")
     }
     
+    // based on current user id, fetch all the related recent messages
     fileprivate func fetchRecentMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
         
@@ -121,7 +120,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
     }
     
     override func setupHeader(_ header: MatchesHeader) {
-        header.matchesHorizontalController.rootMatchesController = self
+//        header.matchesHorizontalController.rootMatchesController = self
     }
     
     func didSelectMatchFromHeader(match: Match) {
@@ -147,6 +146,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         setupUI()
     }
     
+    // set up ui components for message match view
     fileprivate func setupUI() {
         collectionView.backgroundColor = .white
         
@@ -155,7 +155,7 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
         view.addSubview(customNavBar)
         customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: 150))
         
-        collectionView.contentInset.top = 150
+        collectionView.contentInset.top = -100
         collectionView.verticalScrollIndicatorInsets.top = 150
         
         let statusBarCover = UIView(backgroundColor: .white)

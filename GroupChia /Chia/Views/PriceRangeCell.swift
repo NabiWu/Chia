@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+// PriceRangeCell provides the user interface of determine the min/max seeking price
 class PriceRangeCell: UITableViewCell {
     
     let minSlider: UISlider = {

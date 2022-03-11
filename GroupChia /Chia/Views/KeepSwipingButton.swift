@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+// KeepSwipingButton setup the ui for the dismiss button in the matchView
 class KeepSwipingButton: UIButton {
 
     override func draw(_ rect: CGRect) {

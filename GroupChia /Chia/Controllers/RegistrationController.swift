@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+// extentsion for allowing user pick up image from their camera roll
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -25,8 +26,8 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
 }
 
 
+// the registrationController resposible for handling new users' registration process
 class RegistrationController: UIViewController {
-    
     
     var delegate: LoginControllerDelegate?
     // UI Components
@@ -91,7 +92,7 @@ class RegistrationController: UIViewController {
         button.setTitle("Register", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
-//        button.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+
         button.backgroundColor = .lightGray
         button.setTitleColor(.gray, for: .disabled)
         button.isEnabled = false
@@ -104,6 +105,7 @@ class RegistrationController: UIViewController {
     
     let registeringHUD = JGProgressHUD(style: .dark)
     
+    // Contacting with ViewModel to add new user into database
     @objc fileprivate func handelRegister() {
         self.handleTapDismiss()
     
@@ -122,6 +124,7 @@ class RegistrationController: UIViewController {
         
     }
     
+    // using jp hud to display error notification
     fileprivate func showHUDWithError(error: Error){
         registeringHUD.dismiss()
         let hud = JGProgressHUD(style: .dark)
@@ -141,9 +144,8 @@ class RegistrationController: UIViewController {
         setupRegistrationViewModelObserver()
     }
     
-    // MARK:- Private
-    
     let registrationViewModel = RegistrationViewModel()
+    
     
     fileprivate func setupRegistrationViewModelObserver() {
         registrationViewModel.bindableIsFormValid.bind { [unowned self](isFormValid) in
@@ -192,7 +194,6 @@ class RegistrationController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        NotificationCenter.default.removeObserver(self)
     }
     
     @objc fileprivate func handleKeyboardHide() {
@@ -201,6 +202,7 @@ class RegistrationController: UIViewController {
         })
     }
     
+    // handel the keyboard position that will not hide the textview while user typing
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
         guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue

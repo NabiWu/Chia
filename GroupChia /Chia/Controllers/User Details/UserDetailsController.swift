@@ -8,6 +8,9 @@
 import UIKit
 import SDWebImage
 
+// UserDetailsController is a UIViewController contains the detail information
+// of the cardViewModel. It will be shown when user click the button to show
+// more information.
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     
@@ -43,6 +46,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return label
     }()
     
+    // tap the dismiss the controller navigate to the homeController
     let dismissButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "dismiss_down_arrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -50,53 +54,15 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return button
     }()
     
-    lazy var dislikeButton = self.createButton(image: UIImage(named: "dismiss_circle")!, selector: #selector(handleDislike))
-    
-    @objc fileprivate func handleDislike(){
-        print("dislike")
-    }
-    
-    lazy var superLikeButton = self.createButton(image: UIImage(named: "super_like_circle")!, selector: #selector(handleSuperlike))
-    
-    @objc fileprivate func handleSuperlike(){
-        
-    }
-    
-    lazy var likeButton = self.createButton(image: UIImage(named: "like_circle")!, selector: #selector(handleLike))
-    
-    @objc fileprivate func handleLike(){
-        
-    }
-    
-    
-    
-    fileprivate func createButton(image:UIImage, selector: Selector) -> UIButton{
-        let button = UIButton(type: .system)
-        button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: selector, for: .touchUpInside)
-        button.imageView?.contentMode = .scaleAspectFill
-        return button
-    }
-
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
         setupLayout()
         setupVisualBlurEffectView()
-        setupBottomControls()
     }
     
-    fileprivate func setupBottomControls(){
-        let stackView = UIStackView(arrangedSubviews: [dislikeButton, superLikeButton, likeButton])
-        stackView.distribution = .fillEqually
-        stackView.spacing = -32
-        view.addSubview(stackView)
-        stackView.anchor(top: nil, leading: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 300, height: 80))
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    }
+
     
     fileprivate func setupVisualBlurEffectView(){
         let blurEffect = UIBlurEffect(style: .regular)
@@ -133,6 +99,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
     }
     
+    // When user scroll the image, it will zoom in.
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let changeY = -scrollView.contentOffset.y
         var width = view.frame.width + changeY*2

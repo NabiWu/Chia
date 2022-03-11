@@ -7,6 +7,7 @@
 
 import UIKit
 
+// The CustomTextField class modifies the UI of textfield to reduece code reuse
 class CustomTextField: UITextField {
     
     let padding: CGFloat

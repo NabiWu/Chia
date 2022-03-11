@@ -7,10 +7,10 @@
 
 import UIKit
 
+// SettingsCell modifies the ui view of intputting information to reduce code reuse
 class SettingsCell: UITableViewCell {
     
     class SettingsTextField: UITextField {
-        
         override func textRect(forBounds bounds: CGRect) -> CGRect {
             return bounds.insetBy(dx: 24, dy: 0)
         }
