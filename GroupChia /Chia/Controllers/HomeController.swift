@@ -36,8 +36,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         fetchCurrentUser()
         fetchUsersFromFirestore()
-        cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
-        fetchItemsFromFirestore()
     }
     
     // handle the message button function by popping up the message view
