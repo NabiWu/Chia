@@ -50,6 +50,7 @@
 		4B28FFD427D03CB400E79465 /* PostItemEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B28FFD327D03CB400E79465 /* PostItemEditController.swift */; };
 		4B3AB78D27C943F2003B423F /* PostItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB78C27C943F2003B423F /* PostItemController.swift */; };
 		4B3AB79127C94AA4003B423F /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3AB79027C94AA4003B423F /* PostItem.swift */; };
+		4BB2CD8027DEFCF1002C4DAB /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB2CD7F27DEFCF1002C4DAB /* SplashScreenViewController.swift */; };
 		EFF7F0EAF9FC634811080253 /* Pods_Chia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		4B28FFD327D03CB400E79465 /* PostItemEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemEditController.swift; sourceTree = "<group>"; };
 		4B3AB78C27C943F2003B423F /* PostItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemController.swift; sourceTree = "<group>"; };
 		4B3AB79027C94AA4003B423F /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
+		4BB2CD7F27DEFCF1002C4DAB /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
 		61DFDEE4947D5FFDDDFD5B9A /* Pods_Chia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AB479F75EB767792404A73 /* Pods-Chia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chia.release.xcconfig"; path = "Target Support Files/Pods-Chia/Pods-Chia.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -237,6 +239,7 @@
 				2587449727C5FEB000FCDDC4 /* User Details */,
 				2587449227C5D3C900FCDDC4 /* Login */,
 				25EB903527C16BF1005E9408 /* HomeController.swift */,
+				4BB2CD7F27DEFCF1002C4DAB /* SplashScreenViewController.swift */,
 				4B28FFCF27CD90D600E79465 /* PostItemCollectionViewController.swift */,
 				4B28FFD127CD99A900E79465 /* PostItemCollectionCell.swift */,
 				4B28FFD327D03CB400E79465 /* PostItemEditController.swift */,
@@ -411,7 +414,6 @@
 				2587449427C5D42200FCDDC4 /* LoginController.swift in Sources */,
 				25C34A9527C7DE1E00DE63CF /* PhotoController.swift in Sources */,
 				2587449127C5C2E500FCDDC4 /* Firebase+Utils.swift in Sources */,
-				2566D21C27C939FB00BC2C2B /* SendMessageButton.swift in Sources */,
 				25EB904E27C1B23C005E9408 /* CardView.swift in Sources */,
 				25EB903627C16BF1005E9408 /* HomeController.swift in Sources */,
 				4B28FFD427D03CB400E79465 /* PostItemEditController.swift in Sources */,
@@ -428,6 +430,7 @@
 				2587449627C5D44500FCDDC4 /* LoginViewModel.swift in Sources */,
 				25EB905127C1C2FC005E9408 /* User.swift in Sources */,
 				4B3AB79127C94AA4003B423F /* PostItem.swift in Sources */,
+				4BB2CD8027DEFCF1002C4DAB /* SplashScreenViewController.swift in Sources */,
 				4B3AB78D27C943F2003B423F /* PostItemController.swift in Sources */,
 				252431AA27C539070025EAB9 /* SettingsController.swift in Sources */,
 				25EB905927C2B3EA005E9408 /* RegistrationController.swift in Sources */,
@@ -603,10 +606,11 @@
 				EXCLUDED_ARCHS = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chia/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DuoX;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -679,7 +683,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -695,10 +699,11 @@
 				EXCLUDED_ARCHS = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chia/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DuoX;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -771,7 +776,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
