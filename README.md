@@ -4,11 +4,11 @@ _Online shopping, geosocial application_
 <img src="https://user-images.githubusercontent.com/39606745/158277172-fb08d9f4-fa0b-4eef-b51c-f56e6fd4844b.gif" width="250" />
 
 ## Description
-DuoX is an IOS App, which is a Tinder-like online shopping and social platform based on a user’s geographical location. To be more specific, users of our application are able to see card views(one at a time) of different items posted by other users living nearby. Our users can swipe right or left to show likes or dislikes towards the current item on the main screen. 
+DuoX is an IOS App, which is a Tinder-like online shopping and social platform. To be more specific, users of our application are able to see card views(one at a time) of different items posted by other users living nearby. Our users can swipe right or left to show likes or dislikes towards the current item on the main screen. 
 
 ## Features
 
-Basically, our application, DuoX, is a Tinder-like online shopping and social platform based on a user’s geographical location. To be more specific, users of our application are able to see card views(one at a time) of different items posted by other users living nearby. Our users can swipe right or left to show likes or dislikes towards the current item on the main screen. 
+Basically, our application, DuoX, is a Tinder-like online shopping and social platform. To be more specific, users of our application are able to see card views(one at a time) of different items posted by other users living nearby. Our users can swipe right or left to show likes or dislikes towards the current item on the main screen. 
 
 Moreover, each user has a list of the items he or she has liked. Each user can be either seller or buyer or both. For example, sellers can make posts about the items they are selling so that other users living just a few blocks away are able to see them. Also, the items that users are swiping are not necessarily just items or merchandise, they could also be any social activities such as “playing cards”, “go hiking”, “go fishing”, etc. 
 
@@ -16,9 +16,9 @@ Some other basic features are logins and logouts, account registration, posting 
 
 ## How to run the app 
 
-git clone or download the repository. And open the inner folder with Xcode, so that this app can be ran on the simulator or deployed on the Iphone. To successfully run this app on Xcode simulator, please select the correct “Architectures” in the project Build Settings (Default is arm64). 
+git clone or download the repository. And open the inner folder with Xcode, so that this app can be ran on the simulator. If you want to deploy on the iPhone, firstly updating the xcode to the newest version; second removing the arm64 from the Excluded Architecture for both PROJECT and Pods. To successfully run this app on Xcode simulator, please select the correct “Architectures” in the project Build Settings (Default is arm64). 
 
-## High-level overview of  Tech
+## High-level overview of Tech
 
 The app applies the Model-View-ViewModel (MVVM) architecture pattern. The main advantage of using this architecture pattern is that we can significantly reduce the code reuse in our home controller. CardViewModel can act as the ‘middleman’ for storing necessary information as well as the attribute text ui patterns.
 
